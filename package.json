@@ -2,9 +2,9 @@
   "name": "@tjsr/mysql-pool-utils",
   "version": "0.0.2",
   "description": "Connection handling and pooling utils for MySQL",
-  "main": "dist/index.js",
-  "module": "src/index.ts",
-  "types": "dist/index.d.ts",
+  "main": "dist/cjs/mysqlUtils.js",
+  "module": "dist/esm/mysqlUtils.ts",
+  "types": "dist/esm/mysqlUtils.d.ts",
   "type": "module",
   "scripts": {
     "build": "rimraf dist && tsc && tsc -p tsconfig.cjs.json",
