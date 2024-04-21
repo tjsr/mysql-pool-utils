@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv-flow';
 
-import { booleanEnv, intEnv, requireEnv } from '@tjsr/simple-env-utils/dist/cjs/utils.cjs';
+import { booleanEnv, intEnv, requireEnv } from '@tjsr/simple-env-utils';
 
 import mysql from 'mysql';
 import path from 'path';
