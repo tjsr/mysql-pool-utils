@@ -6,15 +6,11 @@ registries:
     token: ${{secrets.GITHUB_TOKEN}}
 updates:
   - package-ecosystem: 'npm'
-    directory: '/'
     registries:
     - npm-github
+    - npm-npmjs
     schedule:
       interval: 'daily'
-  - package-ecosystem: 'npm'
-    directory: '/'
-    schedule:
-      interval: 'weekly'
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
