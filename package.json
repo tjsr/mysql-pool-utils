@@ -1,0 +1,53 @@
+{
+  "name": "@tjsr/mysql-pool-utils",
+  "version": "0.0.1",
+  "description": "Connection handling and pooling utils for MySQL",
+  "main": "dist/index.js",
+  "module": "src/index.ts",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "rimraf dist && tsc && tsc -p tsconfig.cjs.json",
+    "check": "npx npm-check",
+    "clean": "rimraf build dist coverage",
+    "prepack": "npm test && npm run build",
+    "prepublishOnly": "npm run clean && npm test && npm run build",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tjsr/mysql-pool-utils.git"
+  },
+  "keywords": [
+    "env"
+  ],
+  "author": "Tim Rowe <tim@tjsr.id.au>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tjsr/mysql-pool-utils/issues"
+  },
+  "homepage": "https://github.com/tjsr/mysql-pool-utils#readme",
+  "devDependencies": {
+    "@babel/register": "^7.23.7",
+    "@tjsr/simple-env-utils": "^0.0.6",
+    "@types/jest": "^29.5.12",
+    "@types/mysql": "^2.15.26",
+    "@types/node": "^20.12.7",
+    "babel-loader": "^9.1.3",
+    "rimraf": "^5.0.5",
+    "shx": "^0.3.4",
+    "ts-jest": "^29.1.2",
+    "ts-jest-resolver": "^2.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "dotenv-flow": "^4.1.0",
+    "mysql": "^2.18.1"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}
