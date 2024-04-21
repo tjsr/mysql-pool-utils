@@ -1,24 +1,12 @@
-import * as dotenv from 'dotenv-flow';
-
-import { booleanEnv, intEnv, requireEnv } from '@tjsr/simple-env-utils';
+import { booleanEnv, intEnv, loadEnvWithDebug, requireEnv } from '@tjsr/simple-env-utils';
 
 import mysql from 'mysql';
-import path from 'path';
 
 let poolConfig: mysql.PoolConfig|undefined = undefined;
 
 export const getPoolConfig = (): mysql.PoolConfig => {
   if (!poolConfig) {
-    const parseResult: dotenv.DotenvFlowConfigResult<dotenv.DotenvFlowParseResult> = dotenv.config();
-    if (process.env['NODE_ENV'] === 'development') {
-      console.debug(`Loaded dotenv files: ${dotenv.listFiles().map(
-        (file) => file.substring(file.lastIndexOf(path.sep+1))).join(', ')}`);
-    }
-    if (parseResult.error && dotenv.listFiles().length > 0) {
-      throw new Error('Error parsing dotenv file: ' + parseResult.error.message, parseResult.error);
-    } else if (parseResult.error) {
-      console.debug('Error parsing dotenv file: ' + parseResult.error.message, parseResult.error);
-    }
+    loadEnvWithDebug();
 
     poolConfig = {
       bigNumberStrings: true,
@@ -33,7 +21,7 @@ export const getPoolConfig = (): mysql.PoolConfig => {
       user: requireEnv('MYSQL_USER'),
     } as const;
   } else {
-    console.debug('Config already loaded');
+    console.debug('Database config already loaded');
   }
 
   return poolConfig;
@@ -109,3 +97,4 @@ export const closeConnectionPool = async (): Promise<void> => {
     });
   }
 };
+

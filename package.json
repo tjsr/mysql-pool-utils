@@ -28,7 +28,6 @@
   },
   "homepage": "https://github.com/tjsr/mysql-pool-utils#readme",
   "devDependencies": {
-    "@tjsr/simple-env-utils": "^0.0.7",
     "@types/jest": "^29.5.12",
     "@types/mysql": "^2.15.26",
     "@types/node": "^20.12.7",
@@ -39,6 +38,7 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
+    "@tjsr/simple-env-utils": "^0.0.8",
     "dotenv-flow": "^4.1.0",
     "mysql": "^2.18.1"
   },
