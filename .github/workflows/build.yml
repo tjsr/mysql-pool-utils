@@ -1,4 +1,4 @@
-name: Build simple-env-utils
+name: Build mysql-pool-utils
 run-name: ${{ github.actor }} Running mysql-pool-utils build.
 on: [push]
 jobs:
