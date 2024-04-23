@@ -2,4 +2,4 @@ import { closeConnectionPool, getConnection, getConnectionPool, getPoolConfig, s
 
 import { basicMySqlInsert } from './basicMysqlInsert.js';
 
-export { basicMySqlInsert, getPoolConfig, getConnectionPool, safeReleaseConnection, getConnection, closeConnectionPool};
+export { basicMySqlInsert, getPoolConfig, getConnectionPool, safeReleaseConnection, getConnection, closeConnectionPool };
