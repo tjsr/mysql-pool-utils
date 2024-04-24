@@ -16,6 +16,16 @@
     "prepublishOnly": "npm run clean && npm test && npm run build",
     "test": "jest"
   },
+  "nodemonConfig": {
+    "watch": [
+      "src",
+      "package.json"
+    ],
+    "extensions": "*.ts",
+    "ignore": "dist",
+    "exec": "tsc && tsc -p tsconfig.cjs.json",
+    "delay": 200
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tjsr/mysql-pool-utils.git"
@@ -43,11 +53,14 @@
     "typescript-eslint": "^7.7.1"
   },
   "dependencies": {
-    "@tjsr/simple-env-utils": "^0.0.8",
+    "@tjsr/simple-env-utils": "^0.0.9",
     "dotenv-flow": "^4.1.0",
     "mysql": "^2.18.1"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
+  },
+  "optionalDependencies": {
+    "nodemon": "^3.1.0"
   }
 }

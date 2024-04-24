@@ -41,5 +41,5 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
   "include": [ "src" ],
-  "exclude": ["node_modules", "test", "dist", "build", "jest.*", "setup-tests.ts"]
+  "exclude": ["node_modules", "test", "dist", "build", "jest.*", "src/*.test.ts", "src/setup-tests.ts"]
 }
