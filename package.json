@@ -53,7 +53,7 @@
     "typescript-eslint": "^7.7.1"
   },
   "dependencies": {
-    "@tjsr/simple-env-utils": "^0.0.9",
+    "@tjsr/simple-env-utils": "^0.0.10",
     "dotenv-flow": "^4.1.0",
     "mysql": "^2.18.1"
   },
