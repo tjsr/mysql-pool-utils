@@ -5,7 +5,7 @@ import mysql from 'mysql2';
 let poolOptions: mysql.PoolOptions|undefined = undefined;
 
 export const getPoolConfig = (): mysql.PoolOptions => {
-    if (!poolOptions) {
+  if (!poolOptions) {
     loadEnvWithDebug();
 
     poolOptions = {
