@@ -58,9 +58,6 @@
     "dotenv-flow": "^4.1.0",
     "mysql2": "^3.9.7"
   },
-  "overrides": {
-    "mysql2": ">=3.9.7"
-  },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
