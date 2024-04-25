@@ -1,5 +1,5 @@
 import { getConnection } from './mysqlConnections.js';
-import mysql from 'mysql';
+import mysql from 'mysql2';
 
 export const basicMySqlInsert = async (
   table: string,

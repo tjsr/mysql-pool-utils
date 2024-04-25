@@ -10,6 +10,7 @@
     "build": "rimraf dist && tsc && tsc -p tsconfig.cjs.json",
     "check": "npx npm-check",
     "clean": "rimraf build dist coverage",
+    "link": "npm link @tjsr/simple-env-utils",
     "lint": "eslint src/*.ts",
     "lint:fix": "eslint --fix src/*.ts",
     "prepack": "npm test && npm run build",
@@ -18,7 +19,7 @@
   },
   "nodemonConfig": {
     "watch": [
-      "src",
+      "src/**/*.ts",
       "package.json"
     ],
     "extensions": "*.ts",
@@ -55,7 +56,10 @@
   "dependencies": {
     "@tjsr/simple-env-utils": "^0.0.10",
     "dotenv-flow": "^4.1.0",
-    "mysql": "^2.18.1"
+    "mysql2": "^3.9.7"
+  },
+  "overrides": {
+    "mysql2": ">=3.9.7"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"

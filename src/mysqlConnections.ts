@@ -1,14 +1,14 @@
 import { booleanEnv, intEnv, loadEnvWithDebug, requireEnv } from '@tjsr/simple-env-utils';
 
-import mysql from 'mysql';
+import mysql from 'mysql2';
 
-let poolConfig: mysql.PoolConfig|undefined = undefined;
+let poolOptions: mysql.PoolOptions|undefined = undefined;
 
-export const getPoolConfig = (): mysql.PoolConfig => {
-  if (!poolConfig) {
+export const getPoolConfig = (): mysql.PoolOptions => {
+    if (!poolOptions) {
     loadEnvWithDebug();
 
-    poolConfig = {
+    poolOptions = {
       bigNumberStrings: true,
       connectTimeout: intEnv('MYSQL_CONNECT_TIMEOUT', 2000),
       connectionLimit: intEnv('MYSQL_CONNECTION_POOL_SIZE', 5),
@@ -24,7 +24,7 @@ export const getPoolConfig = (): mysql.PoolConfig => {
     console.debug('Database config already loaded');
   }
 
-  return poolConfig;
+  return poolOptions;
 };
 
 let connectionPool: mysql.Pool|undefined;
@@ -59,7 +59,7 @@ export const getConnection = async (): Promise<mysql.PoolConnection> => {
   return new Promise((resolve, reject) => {
     getConnectionPool().then((pool: mysql.Pool) => {
       try {
-        pool.getConnection((err: mysql.MysqlError, connection: mysql.PoolConnection) => {
+        pool.getConnection((err: NodeJS.ErrnoException | null, connection: mysql.PoolConnection) => {
           if (err) {
             safeReleaseConnection(connection);
             reject(err);
