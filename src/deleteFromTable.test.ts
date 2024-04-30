@@ -1,28 +1,19 @@
 import { FieldPacket, PoolConnection, QueryResult } from "mysql2/promise";
-import { closeConnectionPool, getConnection, getConnectionPool, safeReleaseConnection } from "./mysqlConnection";
+import { closeConnectionPool, getConnection, getConnectionPool, isConnectionPoolOpen, safeReleaseConnection } from "./mysqlConnection";
 
 import { basicMySqlInsert } from "./basicMySqlInsert";
 import { connectionDetails } from './setup-tests.js';
-import { createConnection } from "net";
 import { deleteFromTable } from "./deleteFromTable";
 import { mysqlQuery } from "./mysqlQuery";
 import { verifyDatabaseReady } from './verifyDatabaseReady.js';
 
 describe('deleteFromTable', () => {
   beforeAll(async () => {
-    try {
-      await verifyDatabaseReady(connectionDetails);
-    } catch (err) {
-      fail(err);
-    }
+    await verifyDatabaseReady(connectionDetails);
   });
 
   beforeAll(async () => {
-    try {
-      await getConnectionPool('deleteFromTable');
-    } catch (err) {
-      fail(err);
-    }
+    await getConnectionPool('deleteFromTable');
   });
 
   it('Should remove values from a table', async() => {
@@ -62,6 +53,8 @@ describe('deleteFromTable', () => {
   });
 
   afterAll(async () => {
-    await closeConnectionPool('deleteFromTable');
+    if (isConnectionPoolOpen('basicMySqlInsert')) {
+      await closeConnectionPool('deleteFromTable');
+    }
   });
 });

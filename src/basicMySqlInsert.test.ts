@@ -1,4 +1,4 @@
-import { closeConnectionPool, getConnection, getConnectionPool, safeReleaseConnection } from './mysqlConnection.js';
+import { closeConnectionPool, getConnection, getConnectionPool, isConnectionPoolOpen, safeReleaseConnection } from './mysqlConnection.js';
 
 import { PoolConnection } from 'mysql2/promise';
 import { basicMySqlInsert } from './basicMySqlInsert.js';
@@ -13,11 +13,7 @@ describe('basicMySqlInsert', () => {
   });
 
   beforeAll(async () => {
-    try {
-      await getConnectionPool('basicMySqlInsert');
-    } catch (err) {
-      fail(err);
-    }
+    await getConnectionPool('basicMySqlInsert');
   });
 
   beforeEach(async () => {
@@ -60,6 +56,8 @@ describe('basicMySqlInsert', () => {
   });
 
   afterAll(async () => {
-    await closeConnectionPool('basicMySqlInsert');
+    if (isConnectionPoolOpen('basicMySqlInsert')) {
+      await closeConnectionPool('basicMySqlInsert');
+    }
   });
 });
