@@ -2,11 +2,17 @@ import {
   closeConnectionPool,
   getConnection,
   getConnectionPool,
-  getPoolConfig,
   safeReleaseConnection
-} from './mysqlConnections.js';
+} from './mysqlConnection.js';
+import { getCallbackConnectionPool, getCallbackConnectionPromise } from './mysqlCallbackConnection.js';
 
-import { basicMySqlInsert } from './basicMysqlInsert.js';
+import { basicMySqlInsert } from './basicMySqlInsert.js';
+import { deleteFromTable } from './deleteFromTable.js';
+import { getPoolConfig } from './getPoolConfig.js';
+import { mysqlQuery } from './mysqlQuery.js'
+import { verifyDatabaseReady } from './verifyDatabaseReady.js';
 
 export { basicMySqlInsert, getPoolConfig, getConnectionPool,
-  safeReleaseConnection, getConnection, closeConnectionPool };
+  safeReleaseConnection, getConnection, closeConnectionPool, mysqlQuery,
+  getCallbackConnectionPool, getCallbackConnectionPromise, deleteFromTable,
+  verifyDatabaseReady };

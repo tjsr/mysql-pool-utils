@@ -9,6 +9,7 @@ const config: JestConfigWithTsJest = {
     'src/**/*.[m]ts',
   ],
   coverageDirectory: 'coverage',
+  detectOpenHandles: true,
   extensionsToTreatAsEsm: ['.ts'],
   moduleFileExtensions: ['js', 'mjs', 'json', 'ts'],
   moduleNameMapper: {
@@ -28,6 +29,12 @@ const config: JestConfigWithTsJest = {
       },
     ],
   },
+  // preset: "ts-jest/presets/default-esm",
+  // globals: {
+  //   'ts-jest': {
+  //     useESM: true,
+  //   },
+  // },
   // transform: {
   //   '^.+\\.m?[jt]sx?$': [
   //     'esbuild-jest',
@@ -39,7 +46,7 @@ const config: JestConfigWithTsJest = {
   //   ],
   // },
   // transformIgnorePatterns: ['<rootDir>/node_modules/'],
-  verbose: true,
+  verbose: false,
 };
 
 export default config;

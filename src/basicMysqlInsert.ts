@@ -1,33 +1,38 @@
-import { getConnection } from './mysqlConnections.js';
-import mysql from 'mysql2';
+import { getConnection, safeReleaseConnection } from './mysqlConnection.js';
+import mysql, { PoolConnection } from 'mysql2/promise';
 
 export const basicMySqlInsert = async (
   table: string,
-  fields: string[],
-  values: any
+  _fields: string[],
+  values: any,
+  inputConnection?: Promise<PoolConnection>
 ): Promise<void> => {
-  const params: string[] = Array(fields.length).fill('?');
+  if (values === undefined) {
+    return Promise.reject(new Error(`Values must be defined, got undefined parameter`));
+  }
+
+  let connectionPromise: Promise<PoolConnection> | undefined = inputConnection !== undefined ? inputConnection : getConnection()
+  let connection: PoolConnection|undefined = inputConnection != undefined ? undefined : await connectionPromise;
+
   return new Promise((resolve, reject) => {
-    getConnection()
-      .then((conn: mysql.PoolConnection) => {
-        conn.query(
-          `insert into ${table} (${fields.join(', ')}) values (${params.join(
-            ', '
-          )})`,
-          Object.keys(values).map((v) => values[v]),
-          (err) => {
-            conn.release();
+    return connectionPromise!
+      .then(async (conn: PoolConnection) => {
+        const query = mysql.format(`INSERT INTO \`${table}\` SET ?`, [values]);
+        return conn.execute(query).then(() => {
+            safeReleaseConnection(connection);
+            return resolve();
+          }).catch((err) => {
+            safeReleaseConnection(connection);
             if (err && err.sqlState === '23000') {
               console.error('Failed inserting with primary key violation');
-              reject(err);
+              return reject(err);
             } else if (err) {
               console.error(`Error inserting into ${table}: ${err}`, err);
-              reject(err);
+              return reject(err);
             }
-            resolve();
-          }
-        );
-      })
-      .catch((err) => reject(err));
+            console.error(`Got rejected exception while executing an insert, but exception had no err??!`);
+            return reject(err);
+          });
+      }).catch(reject);
   });
 };

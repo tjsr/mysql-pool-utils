@@ -8,6 +8,7 @@
   "type": "module",
   "scripts": {
     "build": "rimraf dist && tsc && tsc -p tsconfig.cjs.json",
+    "pretest": "docker compose build && docker compose up -d",
     "check": "npx npm-check",
     "clean": "rimraf build dist coverage",
     "link": "npm link @tjsr/simple-env-utils",
@@ -19,10 +20,10 @@
   },
   "nodemonConfig": {
     "watch": [
-      "src/**/*.ts",
+      "src",
       "package.json"
     ],
-    "extensions": "*.ts",
+    "ext": "ts",
     "ignore": "dist",
     "exec": "tsc && tsc -p tsconfig.cjs.json",
     "delay": 200
