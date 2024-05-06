@@ -1,10 +1,10 @@
 import { FieldPacket, PoolConnection, QueryResult } from "mysql2/promise";
-import { closeConnectionPool, getConnection, getConnectionPool, isConnectionPoolOpen, safeReleaseConnection } from "./mysqlConnection";
+import { closeConnectionPool, getConnection, getConnectionPool, isConnectionPoolOpen, safeReleaseConnection } from "./mysqlConnection.js";
 
-import { basicMySqlInsert } from "./basicMySqlInsert";
+import { basicMySqlInsert } from "./basicMySqlInsert.js";
 import { connectionDetails } from './setup-tests.js';
-import { deleteFromTable } from "./deleteFromTable";
-import { mysqlQuery } from "./mysqlQuery";
+import { deleteFromTable } from "./deleteFromTable.js";
+import { mysqlQuery } from "./mysqlQuery.js";
 import { verifyDatabaseReady } from './verifyDatabaseReady.js';
 
 describe('deleteFromTable', () => {
