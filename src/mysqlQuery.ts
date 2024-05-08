@@ -1,15 +1,29 @@
 import { Connection, FieldPacket, PoolConnection, QueryResult } from "mysql2/promise";
 import { getConnection, safeReleaseConnection } from "./mysqlConnection.js";
 
+const useExistingOrCreateNewConnection = (inputConnection: Promise<Connection>|undefined, poolName: string):
+  [Promise<Connection>|undefined, Promise<PoolConnection>|undefined] => {
+  if (inputConnection !== undefined) {
+    return [inputConnection, undefined]
+  }
+  const newPoolConnection = getConnection(poolName);
+  // let connection: PoolConnection|undefined = inputConnection != inputConnection ? undefined : await getConnection(poolName);
+  // const useConnection = await (inputConnection) || connection;
+  return [undefined, newPoolConnection];
+};
+
 export const mysqlQuery = async (
-  queryString: string, params: (string|boolean|bigint|number)[], inputConnection?: Promise<Connection>): Promise<[QueryResult, FieldPacket[]]> => {
-  let connection: PoolConnection|undefined = inputConnection != inputConnection ? undefined : await getConnection();
-  const useConnection = await (inputConnection || connection);
+  queryString: string, params: (string|boolean|bigint|number)[], inputConnection?: Promise<Connection>, poolName = 'default'): Promise<[QueryResult, FieldPacket[]]> => {
+  // let connection: PoolConnection|undefined = inputConnection != inputConnection ? undefined : await getConnection(poolName);
+  // const useConnection = await (inputConnection) || connection;
+  const [useConnection, newPoolConnection] = useExistingOrCreateNewConnection(inputConnection, poolName);
+  const readyNewConnection = await newPoolConnection;
+  const effectiveConnection = await (useConnection || newPoolConnection);
   
   return new Promise((resolve, reject) => {
-    useConnection!.query({ sql: queryString, rowsAsArray: true }, params)
+    effectiveConnection!.query({ sql: queryString, rowsAsArray: true }, params)
       .then((results: [QueryResult, FieldPacket[]]) => {
-        safeReleaseConnection(connection);
+        safeReleaseConnection(readyNewConnection);
         if (results == undefined) {
           return reject(
             new Error(
@@ -20,7 +34,7 @@ export const mysqlQuery = async (
 
         return resolve(results);
     }).catch((err) => {
-      safeReleaseConnection(connection);
+      safeReleaseConnection(readyNewConnection);
       return reject(err);
     });
   });

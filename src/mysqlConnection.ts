@@ -5,22 +5,34 @@ import { getPoolConfig } from './getPoolConfig.js';
 const connectionPools: Map<string, Promise<Pool>> = new Map<string, Promise<Pool>>();
 
 // let connectionPool: Pool | undefined;
+const illegalPoolNames: string[] = [];
 
-export const getConnectionPool = async (poolName = 'default'): Promise<Pool> => {
-  if (connectionPools.has(poolName || 'default')) {
-    return connectionPools.get(poolName || 'default')!;
+export const setErrorWhenPoolNamed = (poolName: string): void => {
+  illegalPoolNames.push(poolName);
+};
+
+export const getConnectionPool = async (poolName: string): Promise<Pool> => {
+  if (!poolName) {
+    console.trace('No pool name provided, using default.');
+    return getConnectionPool('default');
+  } else if (illegalPoolNames.includes(poolName)) {
+    throw new Error (`Pool name ${poolName} is illegal.`);
+    }
+  if (connectionPools.has(poolName)) {
+    return connectionPools.get(poolName)!;
   } else {
     const connectionPoolPromise: Promise<Pool> = new Promise(
       (resolve: (value: Pool | PromiseLike<Pool>) => void, reject) => {
       try {
         const connectionPool: Pool = createPool(getPoolConfig());
+        // console.trace(`Created connection pool for id ${poolName}`);
         return resolve(connectionPool);
       } catch (err) {
         console.error('Failed creating connection pool.', err);
         return reject(err);
       }
     });
-    connectionPools.set(poolName || 'default', connectionPoolPromise);
+    connectionPools.set(poolName, connectionPoolPromise);
     return connectionPoolPromise;
   }
 };
@@ -37,7 +49,7 @@ export const safeReleaseConnection = (connection: PoolConnection|undefined): boo
 
 export const getConnection = async (poolName = 'default'): Promise<PoolConnection> => {
   return new Promise((resolve, reject) => {
-    return getConnectionPool(poolName || 'default').then((pool: Pool) => {
+    return getConnectionPool(poolName).then((pool: Pool) => {
       try {
         return pool.getConnection().then(resolve).catch(reject);
       } catch (mysqlError) {
@@ -57,7 +69,7 @@ export const closeConnectionPool = async (poolName = 'default'): Promise<void> =
     return Promise.reject(new Error(`Attempted to close an undefined connection pool named ${poolName}`));
   } else {
     return new Promise((resolve, reject) => {
-      if (!connectionPools.has(poolName)) {
+      if (isConnectionPoolOpen(poolName)) {
         // console.debug('Ended connection pool');
         const promisePoolEnd = connectionPools.get(poolName)!;
 
@@ -78,4 +90,12 @@ export const closeConnectionPool = async (poolName = 'default'): Promise<void> =
 
 export const isConnectionPoolOpen = (poolName = 'default'): boolean => {
   return connectionPools.has(poolName || 'default');
+};
+
+export const countOpenPools = (): number => {
+  return connectionPools.size;
+};
+
+export const listOpenPools = (): string[] => {
+  return Array.from(connectionPools.keys());
 };

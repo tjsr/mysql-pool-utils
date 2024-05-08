@@ -19,8 +19,6 @@ export const getPoolConfig = (poolConfigOverride?: PoolOptions): PoolOptions => 
       ...connectionOptions,
       ...poolConfigOverride,
     } as const;
-  } else {
-    console.debug('Pool database config already loaded');
   }
 
   return poolOptions;

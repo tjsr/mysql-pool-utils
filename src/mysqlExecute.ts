@@ -3,7 +3,7 @@ import mysql, { Connection, FieldPacket, PoolConnection, QueryResult } from "mys
 
 export const mysqlExecute = async (
   queryString: string, params: any, inputConnection?: Promise<Connection>): Promise<[QueryResult, FieldPacket[]]> => {
-  let connection: PoolConnection|undefined = inputConnection != inputConnection ? undefined : await getConnection();
+  let connection: PoolConnection|undefined = inputConnection != undefined ? undefined : await getConnection();
   const useConnection = await (inputConnection || connection);
 
   return new Promise((resolve, reject) => {

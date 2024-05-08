@@ -1,5 +1,5 @@
 import { FieldPacket, PoolConnection, QueryResult } from "mysql2/promise";
-import { closeConnectionPool, getConnection, getConnectionPool, isConnectionPoolOpen, safeReleaseConnection } from "./mysqlConnection.js";
+import { closeConnectionPool, getConnection, getConnectionPool, isConnectionPoolOpen, safeReleaseConnection, setErrorWhenPoolNamed } from "./mysqlConnection.js";
 
 import { basicMySqlInsert } from "./basicMySqlInsert.js";
 import { connectionDetails } from './setup-tests.js';
@@ -9,6 +9,7 @@ import { verifyDatabaseReady } from './verifyDatabaseReady.js';
 
 describe('deleteFromTable', () => {
   beforeAll(async () => {
+    setErrorWhenPoolNamed('default');
     await verifyDatabaseReady(connectionDetails);
   });
 
@@ -19,7 +20,7 @@ describe('deleteFromTable', () => {
   it('Should remove values from a table', async() => {
     const testTagObjectId = 2345;
     const table = 'Tags';
-    const testConnection: Promise<PoolConnection> = getConnection();
+    const testConnection: Promise<PoolConnection> = getConnection('deleteFromTable');
     const connection = await testConnection;
 
     try {
@@ -53,8 +54,9 @@ describe('deleteFromTable', () => {
   });
 
   afterAll(async () => {
-    if (isConnectionPoolOpen('basicMySqlInsert')) {
+    if (isConnectionPoolOpen('deleteFromTable')) {
       await closeConnectionPool('deleteFromTable');
     }
+    expect(isConnectionPoolOpen('default')).toBe(false);
   });
 });

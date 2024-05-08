@@ -1,4 +1,4 @@
-import { closeConnectionPool, getConnection, getConnectionPool, isConnectionPoolOpen, safeReleaseConnection } from './mysqlConnection.js';
+import { closeConnectionPool, countOpenPools, getConnection, getConnectionPool, isConnectionPoolOpen, listOpenPools, safeReleaseConnection, setErrorWhenPoolNamed } from './mysqlConnection.js';
 
 import { PoolConnection } from 'mysql2/promise';
 import { basicMySqlInsert } from './basicMySqlInsert.js';
@@ -9,6 +9,7 @@ import { verifyDatabaseReady } from './verifyDatabaseReady.js';
 
 describe('basicMySqlInsert', () => {
   beforeAll(async () => {
+    setErrorWhenPoolNamed('default');
     await verifyDatabaseReady(connectionDetails);
   });
 
@@ -58,6 +59,16 @@ describe('basicMySqlInsert', () => {
   afterAll(async () => {
     if (isConnectionPoolOpen('basicMySqlInsert')) {
       await closeConnectionPool('basicMySqlInsert');
+    }
+    expect(isConnectionPoolOpen('default')).toBe(false);
+
+    if (isConnectionPoolOpen('default')) {
+      await closeConnectionPool('default');
+    }
+    const openPools = countOpenPools();
+    const poolNames = listOpenPools().join(', ');
+    if (openPools > 0) {
+      console.warn(`${openPools} connection pools for ${poolNames} remain open.`);
     }
   });
 });
