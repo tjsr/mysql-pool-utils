@@ -9,7 +9,7 @@ import { getCallbackConnectionPool, getCallbackConnectionPromise } from './mysql
 import { basicMySqlInsert } from './basicMySqlInsert.js';
 import { deleteFromTable } from './deleteFromTable.js';
 import { getPoolConfig } from './getPoolConfig.js';
-import { mysqlQuery } from './mysqlQuery.js'
+import { mysqlQuery } from './mysqlQuery.js';
 import { verifyDatabaseReady } from './verifyDatabaseReady.js';
 
 export { basicMySqlInsert, getPoolConfig, getConnectionPool,

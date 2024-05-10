@@ -32,12 +32,14 @@ export const getConnectionConfig = (): ConnectionOptions => {
 export const getUnpooledConnection = (connectionOptionsOverride?: ConnectionOptions): Promise<Connection> => {
   const connectionOptions = {
     ...defaultConnectionOptions,
-    ...connectionOptionsOverride
+    ...connectionOptionsOverride,
   } as const;
   
   return mysql.createConnection(connectionOptions).then((conn: mysql.Connection) => {
     return Promise.resolve(conn);
   }).catch((err) => {
-    return Promise.reject(`Error connecting to ${connectionOptions.host}:${connectionOptions.port}/${connectionOptions.database}: ${err}`);
+    return Promise.reject(new Error(
+      `Error connecting to ${connectionOptions.host}:${connectionOptions.port}/${connectionOptions.database}: ${err}`
+    ));
   });
 };

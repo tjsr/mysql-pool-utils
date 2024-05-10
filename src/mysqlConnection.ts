@@ -17,21 +17,21 @@ export const getConnectionPool = async (poolName: string): Promise<Pool> => {
     return getConnectionPool('default');
   } else if (illegalPoolNames.includes(poolName)) {
     throw new Error (`Pool name ${poolName} is illegal.`);
-    }
+  }
   if (connectionPools.has(poolName)) {
     return connectionPools.get(poolName)!;
   } else {
     const connectionPoolPromise: Promise<Pool> = new Promise(
       (resolve: (value: Pool | PromiseLike<Pool>) => void, reject) => {
-      try {
-        const connectionPool: Pool = createPool(getPoolConfig());
-        // console.trace(`Created connection pool for id ${poolName}`);
-        return resolve(connectionPool);
-      } catch (err) {
-        console.error('Failed creating connection pool.', err);
-        return reject(err);
-      }
-    });
+        try {
+          const connectionPool: Pool = createPool(getPoolConfig());
+          // console.trace(`Created connection pool for id ${poolName}`);
+          return resolve(connectionPool);
+        } catch (err) {
+          console.error('Failed creating connection pool.', err);
+          return reject(err);
+        }
+      });
     connectionPools.set(poolName, connectionPoolPromise);
     return connectionPoolPromise;
   }

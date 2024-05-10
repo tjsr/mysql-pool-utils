@@ -6,7 +6,7 @@ let connectionPool: Pool | undefined;
 
 export const getCallbackConnectionPool = (): Pool => {
   if (undefined === connectionPool) {
-      connectionPool = createPool(getPoolConfig());
+    connectionPool = createPool(getPoolConfig());
   }
   return connectionPool;
 };
@@ -28,19 +28,19 @@ export const getCallbackConnectionPromise = async (): Promise<Connection> => {
   });
 };
 
-  // export const getConnection = async (): Promise<PoolConnection> => {
-  //   return new Promise((resolve, reject) => {
-  //     return getConnectionPool().then((pool: Pool) => {
-  //       try {
-  //         return pool.getConnection().then(resolve).catch(reject);
-  //       } catch (mysqlError) {
-  //         console.error('Error getting connection from pool with thrown exception.', mysqlError);
-  //         return reject(mysqlError);
-  //       }
-  //     }).catch((poolError) => {
-  //       console.error('Failed getting connection pool.', poolError);
-  //       return reject(poolError);
-  //     });
-  //   });
+// export const getConnection = async (): Promise<PoolConnection> => {
+//   return new Promise((resolve, reject) => {
+//     return getConnectionPool().then((pool: Pool) => {
+//       try {
+//         return pool.getConnection().then(resolve).catch(reject);
+//       } catch (mysqlError) {
+//         console.error('Error getting connection from pool with thrown exception.', mysqlError);
+//         return reject(mysqlError);
+//       }
+//     }).catch((poolError) => {
+//       console.error('Failed getting connection pool.', poolError);
+//       return reject(poolError);
+//     });
+//   });
   
 // }

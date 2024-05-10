@@ -8,9 +8,9 @@ dotenvFlow.config({ path: process.cwd(), silent: true });
 setTestMode();
 
 export const connectionDetails: ConnectionOptions = {
-  host: '127.0.0.1',
-  user: 'testuser',
-  password: 'testpassword',
   database: 'testdb',
+  host: '127.0.0.1',
+  password: 'testpassword',
+  user: 'testuser',
 } as const;
 

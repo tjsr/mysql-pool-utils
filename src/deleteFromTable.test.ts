@@ -1,5 +1,16 @@
-import { FieldPacket, PoolConnection, QueryResult } from "mysql2/promise";
-import { closeConnectionPool, getConnection, getConnectionPool, isConnectionPoolOpen, safeReleaseConnection, setErrorWhenPoolNamed } from "./mysqlConnection.js";
+import {
+  FieldPacket,
+  PoolConnection,
+  QueryResult
+} from "mysql2/promise";
+import {
+  closeConnectionPool,
+  getConnection,
+  getConnectionPool,
+  isConnectionPoolOpen,
+  safeReleaseConnection,
+  setErrorWhenPoolNamed
+} from "./mysqlConnection.js";
 
 import { basicMySqlInsert } from "./basicMySqlInsert.js";
 import { connectionDetails } from './setup-tests.js';
@@ -30,16 +41,18 @@ describe('deleteFromTable', () => {
       // Arrange
       const fields = ['objectId', 'tag', 'createdByUserId'];
       const values = {
+        createdByUserId: 'user' + testTagObjectId,
         objectId: testTagObjectId,
         tag: 'test',
-        createdByUserId: 'user' + testTagObjectId,
       };
   
       await expect(basicMySqlInsert(table, fields, values, testConnection)).resolves.not.toThrow();
       const testRowsDeleted = await deleteFromTable(table, { objectId: testTagObjectId }, testConnection);
       expect(testRowsDeleted).toBe(1);
 
-      const queryResultsPromise = mysqlQuery(`SELECT * FROM ${table} WHERE objectId = ?`, [testTagObjectId], testConnection);
+      const queryResultsPromise = mysqlQuery(
+        `SELECT * FROM ${table} WHERE objectId = ?`,[testTagObjectId], testConnection
+      );
       await expect(queryResultsPromise).resolves.not.toThrow();
 
       const queryResults: [QueryResult, FieldPacket[]] = await queryResultsPromise;

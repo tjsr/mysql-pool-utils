@@ -1,4 +1,13 @@
-import { closeConnectionPool, countOpenPools, getConnection, getConnectionPool, isConnectionPoolOpen, listOpenPools, safeReleaseConnection, setErrorWhenPoolNamed } from './mysqlConnection.js';
+import {
+  closeConnectionPool,
+  countOpenPools,
+  getConnection,
+  getConnectionPool,
+  isConnectionPoolOpen,
+  listOpenPools,
+  safeReleaseConnection,
+  setErrorWhenPoolNamed
+} from './mysqlConnection.js';
 
 import { PoolConnection } from 'mysql2/promise';
 import { basicMySqlInsert } from './basicMySqlInsert.js';
@@ -33,9 +42,9 @@ describe('basicMySqlInsert', () => {
       // Arrange
       const fields = ['objectId', 'tag', 'createdByUserId'];
       const values = {
+        createdByUserId: 'user' + testTagObjectId,
         objectId: testTagObjectId,
         tag: 'test',
-        createdByUserId: 'user' + testTagObjectId,
       };
   
       await expect(basicMySqlInsert(table, fields, values, testConnection)).resolves.not.toThrow();
@@ -43,16 +52,15 @@ describe('basicMySqlInsert', () => {
       await expect(queryPromise).resolves.not.toThrow();
       await testConnection;
       await expect (queryPromise).resolves.not.toThrow();
-      return Promise.resolve();
-    } catch (err) {
-      console.error(`Error in test: ${err}`);
-      throw err;
-    } finally {
       if (safeReleaseConnection(connection)) {
         return Promise.resolve();
       } else {
         throw new Error("Failed to release connection in finally block.");
       }
+    } catch (err) {
+      safeReleaseConnection(connection);
+      console.error(`Error in test: ${err}`);
+      throw err;
     }
   });
 

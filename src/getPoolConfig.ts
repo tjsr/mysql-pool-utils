@@ -12,7 +12,7 @@ export const getPoolConfig = (poolConfigOverride?: PoolOptions): PoolOptions => 
   if (!poolOptions) {
     loadEnvWithDebug();
 
-    let connectionOptions: ConnectionOptions = getConnectionConfig();
+    const connectionOptions: ConnectionOptions = getConnectionConfig();
 
     poolOptions = {
       ...defaultPoolOptions,

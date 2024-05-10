@@ -3,11 +3,11 @@ import mysql, { Connection, FieldPacket, PoolConnection, QueryResult } from "mys
 
 export const mysqlExecute = async (
   queryString: string, params: any, inputConnection?: Promise<Connection>): Promise<[QueryResult, FieldPacket[]]> => {
-  let connection: PoolConnection|undefined = inputConnection != undefined ? undefined : await getConnection();
+  const connection: PoolConnection|undefined = inputConnection != undefined ? undefined : await getConnection();
   const useConnection = await (inputConnection || connection);
 
   return new Promise((resolve, reject) => {
-    useConnection!.execute({ sql: mysql.format(queryString, [params]), rowsAsArray: true })
+    useConnection!.execute({ rowsAsArray: true, sql: mysql.format(queryString, [params]) })
       .then((results: [QueryResult, FieldPacket[]]) => {
         safeReleaseConnection(connection);
         if (results == undefined) {
@@ -19,9 +19,9 @@ export const mysqlExecute = async (
         }
 
         return resolve(results);
-    }).catch((err) => {
-      safeReleaseConnection(connection);
-      return reject(err);
-    });
+      }).catch((err) => {
+        safeReleaseConnection(connection);
+        return reject(err);
+      });
   });
 };
