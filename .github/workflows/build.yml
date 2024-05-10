@@ -50,6 +50,11 @@ jobs:
       run: npm run lint
 
     - run: npm run test
+      name: Run tests with DB container
+      env:
+        DATABASE_CHECK_RETRIES: 20
+        DATABASE_CHECK_DELAY: 500
+
     - run: npm run build
 
     - name: Run lint at end on all other branches
