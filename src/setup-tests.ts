@@ -4,8 +4,6 @@ import { intEnv, setTestMode } from '@tjsr/simple-env-utils';
 
 import { ConnectionOptions } from 'mysql2/promise';
 
-// import { verifyDatabaseReady } from './verifyDatabaseReady';
-
 dotenvFlow.config({ path: process.cwd(), silent: true });
 
 setTestMode();
@@ -17,11 +15,3 @@ export const connectionDetails: ConnectionOptions = {
   port: intEnv('MYSQL_PORT', 3306),
   user: process.env['MYSQL_USER'] || 'testuser',
 } as const;
-
-// const test = async () => {
-
-// };
-
-// await test();
-
-// await verifyDatabaseReady(connectionDetails);
