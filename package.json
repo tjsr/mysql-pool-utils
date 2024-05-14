@@ -2,7 +2,7 @@
   "name": "@tjsr/mysql-pool-utils",
   "version": "0.1.1",
   "description": "Connection handling and pooling utils for MySQL",
-  "main": "dist/esm/mysqlUtils.cjs",
+  "main": "dist/esm/mysqlUtils.js",
   "module": "dist/esm/mysqlUtils.js",
   "types": "dist/esm/mysqlUtils.d.ts",
   "type": "module",
@@ -61,7 +61,7 @@
     "typescript-eslint": "^7.8.0"
   },
   "dependencies": {
-    "@tjsr/simple-env-utils": "^0.0.11",
+    "@tjsr/simple-env-utils": "^0.0.13",
     "dotenv-flow": "^4.1.0",
     "mysql2": "^3.9.7"
   },
