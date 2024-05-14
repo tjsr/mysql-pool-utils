@@ -18,7 +18,7 @@
     "link": "npm link @tjsr/simple-env-utils",
     "lint": "eslint src/*.ts",
     "lint:fix": "eslint --fix src/*.ts",
-    "prepack": "npm test && npm run build",
+    "prepack": "npm run lint && npm test && npm run build",
     "prepublishOnly": "npm run clean && npm test && npm run build",
     "pretest": "docker compose build && docker compose up -d",
     "postinstall": "npm link @tjsr/simple-env-utils",
