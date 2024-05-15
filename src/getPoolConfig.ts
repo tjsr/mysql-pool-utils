@@ -1,6 +1,6 @@
 import { ConnectionOptions, PoolOptions } from "mysql2";
 import { defaultConnectionOptions, getConnectionConfig } from "./unpooledConnection.js";
-import { intEnv, loadEnvWithDebug } from "@tjsr/simple-env-utils";
+import { intEnv, loadEnv } from "@tjsr/simple-env-utils";
 
 let poolOptions: PoolOptions|undefined = undefined;
 
@@ -10,7 +10,7 @@ const defaultPoolOptions: PoolOptions = {
 
 export const getPoolConfig = (poolConfigOverride?: PoolOptions): PoolOptions => {
   if (!poolOptions) {
-    loadEnvWithDebug();
+    loadEnv();
 
     const connectionOptions: ConnectionOptions = getConnectionConfig();
 

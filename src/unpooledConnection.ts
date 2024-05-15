@@ -1,12 +1,10 @@
 import { DEFAULT_CONNECTION_TIMEOUT, DEFAULT_MYSQL_PORT } from "./defaults.js";
-import { booleanEnv, intEnv, loadEnvWithDebug, requireEnv } from "@tjsr/simple-env-utils";
+import { booleanEnv, intEnv, loadEnv, requireEnv } from "@tjsr/simple-env-utils";
 import mysql, { Connection, ConnectionOptions } from "mysql2/promise";
-
-import dotenvFlow from "dotenv-flow";
 
 let connectionOptions: ConnectionOptions | undefined = undefined;
 
-dotenvFlow.config({ path: process.cwd(), silent: true });
+loadEnv({ silent: true });
 
 // TODO: Default values don't need to be required from env because they could be overridden.  They only
 // need to be required if they are not overridden.
@@ -24,7 +22,7 @@ export const defaultConnectionOptions: ConnectionOptions = {
 
 export const getConnectionConfig = (): ConnectionOptions => {
   if (!connectionOptions) {
-    loadEnvWithDebug();
+    loadEnv();
 
     connectionOptions = {
       ...defaultConnectionOptions,
