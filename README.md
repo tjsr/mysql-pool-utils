@@ -21,3 +21,8 @@ Contains:
 - `MYSQL_PASSWORD` *required*
 - `MYSQL_PORT` (int, default 3306)
 - `MYSQL_USER` *required*
+
+## Testing
+
+Before running `npm test`, make sure you have a database with a simple test table accessible at the credentials
+specified in `.env.test`.  You can run up a container using `npm db:up` and teardown using `npm db:down`.
