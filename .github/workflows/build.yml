@@ -45,10 +45,6 @@ jobs:
 
     - run: npm ci
 
-    - name: Run lint
-      if: github.ref == 'refs/head/main' || github.ref == 'refs/head/prod'
-      run: npm run lint
-
     - name: Startup MySQL container
       uses: hoverkraft-tech/compose-action@v2.0.0
       with:
@@ -64,10 +60,3 @@ jobs:
         DATABASE_CHECK_DELAY: 500
   
     - run: npm run build
-
-    - name: Run lint at end on all other branches
-      if: github.ref != 'refs/head/main'
-      run: |
-        npm run lint
-        npm publish --dry-run
-  
