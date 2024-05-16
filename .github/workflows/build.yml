@@ -49,12 +49,20 @@ jobs:
       if: github.ref == 'refs/head/main' || github.ref == 'refs/head/prod'
       run: npm run lint
 
+    - name: Startup MySQL container
+      uses: hoverkraft-tech/compose-action@v2.0.0
+      with:
+        compose-file: docker-compose.yml
+        services: mysqldb
+        up-flags: '-d'
+
     - run: npm run test
       name: Run tests with DB container
       env:
+        DOTENV_FLOW_PATTERN: '.env.test'
         DATABASE_CHECK_RETRIES: 20
         DATABASE_CHECK_DELAY: 500
-
+  
     - run: npm run build
 
     - name: Run lint at end on all other branches

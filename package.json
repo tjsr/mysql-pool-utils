@@ -20,8 +20,8 @@
     "lint:fix": "eslint --fix src/*.ts",
     "prepack": "npm run lint && npm test && npm run build",
     "prepublishOnly": "npm run clean && npm test && npm run build",
-    "pretest": "docker compose build && docker compose up -d",
-    "posttest": "docker compose down",
+    "disable:pretest": "docker compose build && docker compose up -d",
+    "disable:posttest": "docker compose down",
     "disable:postinstall": "npm link @tjsr/simple-env-utils",
     "test": "vitest --run && eslint src/*.ts"
   },
