@@ -1,6 +1,6 @@
 {
   "name": "@tjsr/mysql-pool-utils",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Connection handling and pooling utils for MySQL",
   "main": "dist/esm/mysqlUtils.js",
   "module": "dist/esm/mysqlUtils.js",
