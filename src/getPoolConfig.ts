@@ -18,7 +18,7 @@ export const getPoolConfig = (poolConfigOverride?: PoolOptions): PoolOptions => 
       ...defaultPoolOptions,
       ...connectionOptions,
       ...poolConfigOverride,
-    } as const;
+    } as PoolOptions;
   }
 
   return poolOptions;

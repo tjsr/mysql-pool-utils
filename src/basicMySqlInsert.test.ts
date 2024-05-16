@@ -10,17 +10,18 @@ import {
   safeReleaseConnection,
   setErrorWhenPoolNamed
 } from './mysqlConnection.js';
+import { generateTestIdNumber, mysqlConnectionString } from './testUtils.js';
 
 import { basicMySqlInsert } from './basicMySqlInsert.js';
 import { connectionDetails } from './setup-tests.js';
 import { deleteFromTable } from './deleteFromTable.js';
-import { generateTestIdNumber } from './testUtils.js';
 import { mysqlQuery } from './mysqlQuery.js';
 import { verifyDatabaseReady } from './verifyDatabaseReady.js';
 
 describe('basicMySqlInsert', () => {
   beforeAll(async () => {
     setErrorWhenPoolNamed('default');
+    console.log(`Running tests against database ${mysqlConnectionString(connectionDetails)}`);
     await verifyDatabaseReady(connectionDetails);
   });
 

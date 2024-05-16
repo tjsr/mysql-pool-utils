@@ -1,11 +1,8 @@
-import * as dotenvFlow from 'dotenv-flow';
-
-import { intEnv, setTestMode } from '@tjsr/simple-env-utils';
+import { intEnv, loadEnv, setTestMode } from '@tjsr/simple-env-utils';
 
 import { ConnectionOptions } from 'mysql2/promise';
 
-dotenvFlow.config({ path: process.cwd(), silent: true });
-
+loadEnv();
 setTestMode();
 
 export const connectionDetails: ConnectionOptions = {

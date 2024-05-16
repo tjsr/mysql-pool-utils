@@ -1,3 +1,4 @@
+import { ConnectionOptions } from 'mysql2/promise';
 import crypto from 'crypto';
 
 const CURRENT_TEST_RUN_ID = Math.floor(Math.random() * 1000);
@@ -16,4 +17,13 @@ export const generateTestIdNumber = (suiteId: string, suiteRange = 1000, range =
 export const generateTestIdString = (suiteId: string, range = 1000): string => {
   const testIdNumber = generateTestIdNumber(suiteId, range);
   return `id-${testIdNumber.toString().padStart(7, '0')}`;
+};
+
+export const mysqlConnectionString = (connectionDetails: ConnectionOptions): string => {
+  const [u, h, db] = [
+    connectionDetails.user,
+    connectionDetails.host,
+    connectionDetails.database,
+  ];
+  return `mysql://${u}:***@${h}/${db}`;
 };

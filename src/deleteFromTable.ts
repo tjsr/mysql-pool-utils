@@ -14,7 +14,7 @@ export const deleteFromTable = (
   return mysqlExecute(
     `DELETE FROM \`${table}\` WHERE ?`, whereClause, inputConnection
   ).then((results: [QueryResult, FieldPacket[]]) => {
-    const queryResult: QueryResult = results[0];
+    const queryResult: QueryResult = results[0] as QueryResult;
     const rsh = queryResult as ResultSetHeader;
     return Promise.resolve(rsh.affectedRows);
   });
