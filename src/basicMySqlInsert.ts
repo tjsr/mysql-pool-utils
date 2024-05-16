@@ -19,6 +19,7 @@ export const basicMySqlInsert = async (
     return connectionPromise!
       .then(async (conn: PoolConnection) => {
         const query = mysql.format(`INSERT INTO \`${table}\` SET ?`, [values]);
+        console.debug(`Executing query: ${query}`);
         return conn.execute(query).then(() => {
           safeReleaseConnection(connection);
           return resolve();

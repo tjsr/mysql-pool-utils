@@ -3,6 +3,7 @@ import {
   PoolConnection,
   QueryResult
 } from "mysql2/promise";
+import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 import {
   closeConnectionPool,
   getConnection,
@@ -15,6 +16,7 @@ import {
 import { basicMySqlInsert } from "./basicMySqlInsert.js";
 import { connectionDetails } from './setup-tests.js';
 import { deleteFromTable } from "./deleteFromTable.js";
+import { generateTestIdNumber } from "./testUtils.js";
 import { mysqlQuery } from "./mysqlQuery.js";
 import { verifyDatabaseReady } from './verifyDatabaseReady.js';
 
@@ -28,8 +30,8 @@ describe('deleteFromTable', () => {
     await getConnectionPool('deleteFromTable');
   });
 
-  it('Should remove values from a table', async() => {
-    const testTagObjectId = 2345;
+  test('Should remove values from a table', async() => {
+    const testTagObjectId = generateTestIdNumber('deleteFromTable');
     const table = 'Tags';
     const testConnection: Promise<PoolConnection> = getConnection('deleteFromTable');
     const connection = await testConnection;

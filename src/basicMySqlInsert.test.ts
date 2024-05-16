@@ -1,3 +1,5 @@
+import { FieldPacket, PoolConnection, QueryResult } from 'mysql2/promise';
+import { afterAll, beforeAll, beforeEach, describe, expect, test } from 'vitest';
 import {
   closeConnectionPool,
   countOpenPools,
@@ -9,10 +11,10 @@ import {
   setErrorWhenPoolNamed
 } from './mysqlConnection.js';
 
-import { PoolConnection } from 'mysql2/promise';
 import { basicMySqlInsert } from './basicMySqlInsert.js';
 import { connectionDetails } from './setup-tests.js';
 import { deleteFromTable } from './deleteFromTable.js';
+import { generateTestIdNumber } from './testUtils.js';
 import { mysqlQuery } from './mysqlQuery.js';
 import { verifyDatabaseReady } from './verifyDatabaseReady.js';
 
@@ -29,15 +31,23 @@ describe('basicMySqlInsert', () => {
   beforeEach(async () => {
   });
 
-  it('should insert a record', async () => {
-    const testTagObjectId = 2345;
+  test('should insert a record', async () => {
+    const testTagObjectId = generateTestIdNumber('basicMysqlInsert'); // 2345;
     const table = 'Tags';
     const testConnection: Promise<PoolConnection> = getConnection('basicMySqlInsert');
     const connection = await testConnection;
 
     try {
+      const initialQueryPromise: Promise<[QueryResult, FieldPacket[]]> = mysqlQuery(
+        `SELECT * FROM ${table} WHERE objectId = ?`, [testTagObjectId], testConnection
+      );
+      await expect(initialQueryPromise).resolves.not.toThrow();
+      const initialQueryResults: [QueryResult, FieldPacket[]] = await initialQueryPromise;
+      const currentMatchingRows = (initialQueryResults[0] as []).length;
+
       const rowsDeleted = await deleteFromTable(table, { objectId: testTagObjectId }, testConnection);
       expect(rowsDeleted).toBeGreaterThanOrEqual(0);
+      expect(rowsDeleted).toEqual(currentMatchingRows);
   
       // Arrange
       const fields = ['objectId', 'tag', 'createdByUserId'];
@@ -48,10 +58,13 @@ describe('basicMySqlInsert', () => {
       };
   
       await expect(basicMySqlInsert(table, fields, values, testConnection)).resolves.not.toThrow();
-      const queryPromise = mysqlQuery(`SELECT * FROM ${table} WHERE objectId = ?`, [testTagObjectId], testConnection);
+      const queryPromise: Promise<[QueryResult, FieldPacket[]]> = mysqlQuery(
+        `SELECT * FROM ${table} WHERE objectId = ?`, [testTagObjectId], testConnection
+      );
       await expect(queryPromise).resolves.not.toThrow();
-      await testConnection;
-      await expect (queryPromise).resolves.not.toThrow();
+      await queryPromise;
+      // await testConnection;
+      // await expect(queryPromise).resolves.not.toThrow();
       if (safeReleaseConnection(connection)) {
         return Promise.resolve();
       } else {
