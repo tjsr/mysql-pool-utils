@@ -4,7 +4,7 @@ import mysql, { PoolConnection } from 'mysql2/promise';
 export const basicMySqlInsert = async (
   table: string,
   _fields: string[],
-  values: any,
+  values: unknown,
   inputConnection?: Promise<PoolConnection>
 ): Promise<void> => {
   if (values === undefined) {

@@ -2,7 +2,10 @@ import { getConnection, safeReleaseConnection } from "./mysqlConnection.js";
 import mysql, { Connection, FieldPacket, PoolConnection, QueryResult } from "mysql2/promise";
 
 export const mysqlExecute = async (
-  queryString: string, params: any, inputConnection?: Promise<Connection>): Promise<[QueryResult, FieldPacket[]]> => {
+  queryString: string,
+  params: string|number|bigint|object,
+  inputConnection?: Promise<Connection>
+): Promise<[QueryResult, FieldPacket[]]> => {
   const connection: PoolConnection|undefined = inputConnection != undefined ? undefined : await getConnection();
   const useConnection = await (inputConnection || connection);
 

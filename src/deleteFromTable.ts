@@ -3,7 +3,7 @@ import { Connection, FieldPacket, QueryResult, ResultSetHeader } from 'mysql2/pr
 import { mysqlExecute } from './mysqlExecute.js';
 
 export const deleteFromTable = (
-  table: string, whereClause: any, inputConnection?: Promise<Connection>
+  table: string, whereClause: object, inputConnection?: Promise<Connection>
 ): Promise<number> => {
   if (whereClause == undefined) {
     return Promise.reject(new Error(`whereClause is undefined`));

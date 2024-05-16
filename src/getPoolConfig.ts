@@ -24,12 +24,12 @@ export const getPoolConfig = (poolConfigOverride?: PoolOptions): PoolOptions => 
   return poolOptions;
 };
 
-export const getPoolConnectionOption = (optionName: string): string => {
+export const getPoolConnectionOption = (optionName: keyof ConnectionOptions): string => {
   if (poolOptions) {
-    return (poolOptions as any)[optionName];
+    return (poolOptions as ConnectionOptions)[optionName];
   } else {
     return ({
       ...defaultConnectionOptions,
-      ...defaultPoolOptions } as any)[optionName];
+      ...defaultPoolOptions } as ConnectionOptions)[optionName];
   }
 };
