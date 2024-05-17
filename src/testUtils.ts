@@ -28,6 +28,7 @@ export const mysqlConnectionString = (connectionDetails: ConnectionOptions): str
   return `mysql://${u}:***@${h}/${db}`;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const elideValues = (key: string, value: any): any => {
   if (key.match(/pass([word|phrase]?)/i)) {
     return '***';

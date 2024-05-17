@@ -25,7 +25,8 @@ export const persistentlyGetConnection = async (
         }
         const timeSinceStart = Date.now() - startTime;
         if (timeSinceStart > timeoutMilliseconds) {
-          console.warn(`Timed out - exceeded maximum time ${timeoutMilliseconds} for retries (${retries}/${maxRetries}): ${err}`);
+          console.warn(`Timed out - exceeded maximum time ${timeoutMilliseconds} ` +
+            `for retries (${retries}/${maxRetries}): ${err}`);
           return reject(new Error(
             `Timed out - exceeded maximum time ${timeoutMilliseconds} for retries (${retries}/${maxRetries}): ${err}`
           ));
