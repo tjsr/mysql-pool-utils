@@ -13,6 +13,7 @@ export const verifyDatabaseReady = async (connectionDetails: ConnectionOptions):
     connectionDetails, databaseCheckRetries, databaseCheckDelay, databaseTimeout);
   return new Promise<void>((resolve, reject) => {
     mysqlQuery('SELECT 1', [], connectionPromise).then(() => {
+      console.log(`Database at ${connectionDetails.host}/${connectionDetails.database} is ready.`);
       return resolve();
     }).catch((err) => {
       return reject(err);

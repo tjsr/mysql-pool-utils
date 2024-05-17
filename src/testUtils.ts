@@ -27,3 +27,10 @@ export const mysqlConnectionString = (connectionDetails: ConnectionOptions): str
   ];
   return `mysql://${u}:***@${h}/${db}`;
 };
+
+export const elideValues = (key: string, value: any): any => {
+  if (key.match(/pass([word|phrase]?)/i)) {
+    return '***';
+  }
+  return value;
+};
