@@ -12,6 +12,8 @@ import { getPoolConfig } from './getPoolConfig.js';
 import { mysqlQuery } from './mysqlQuery.js';
 import { verifyDatabaseReady } from './verifyDatabaseReady.js';
 
+export type { PoolOptions } from 'mysql2';
+
 export { basicMySqlInsert, getPoolConfig, getConnectionPool,
   safeReleaseConnection, getConnection, closeConnectionPool, mysqlQuery,
   getCallbackConnectionPool, getCallbackConnectionPromise, deleteFromTable,
