@@ -42,7 +42,7 @@ export const getUnpooledConnection = (connectionOptionsOverride?: ConnectionOpti
   
   const connectionDetailString = `${connectionOptions.host}:${connectionOptions.port}/${connectionOptions.database}`;
   return mysql.createConnection(connectionOptions).then((conn: mysql.Connection) => {
-    console.debug(`Got unpooled connection to to ${connectionDetailString}.`);
+    console.debug(getUnpooledConnection, `Got unpooled connection to ${connectionDetailString}.`);
     return Promise.resolve(conn);
   }).catch((err) => {
     console.warn(`Error connecting to ${connectionDetailString}: ${err}`);

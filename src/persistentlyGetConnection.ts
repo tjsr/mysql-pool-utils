@@ -10,22 +10,22 @@ export const persistentlyGetConnection = async (
 ): Promise<Connection> => {
   const startTime = Date.now();
   return new Promise((resolve, reject) => {
-    console.debug(`Attempting to reattempt connection to database ${maxRetries} times...`);
+    console.debug(persistentlyGetConnection, `Attempting to reattempt connection to database ${maxRetries} times...`);
     let retries = 0;
     const tryGetConnection = async () => {
       try {
         const connection = await getUnpooledConnection(connectionOptionOverrides); 
-        console.debug('Got connection...');
+        console.debug(persistentlyGetConnection, 'Got connection...');
         return resolve(connection);
       } catch (err) {
         console.info(`Retrying connection ${retries}/${maxRetries}: ${err}`);
         if (retries >= maxRetries) {
-          console.warn(`Failed to get connection after ${retries} retries: ${err}`);
+          console.warn(persistentlyGetConnection, `Failed to get connection after ${retries} retries: ${err}`);
           return reject(err);
         }
         const timeSinceStart = Date.now() - startTime;
         if (timeSinceStart > timeoutMilliseconds) {
-          console.warn(`Timed out - exceeded maximum time ${timeoutMilliseconds} ` +
+          console.warn(persistentlyGetConnection, `Timed out - exceeded maximum time ${timeoutMilliseconds} ` +
             `for retries (${retries}/${maxRetries}): ${err}`);
           return reject(new Error(
             `Timed out - exceeded maximum time ${timeoutMilliseconds} for retries (${retries}/${maxRetries}): ${err}`
