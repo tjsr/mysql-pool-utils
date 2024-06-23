@@ -60,7 +60,7 @@
     "vitest": "^1.6.0"
   },
   "dependencies": {
-    "@tjsr/simple-env-utils": "^0.0.16",
+    "@tjsr/simple-env-utils": "^0.1.1",
     "mysql2": "^3.10.0"
   },
   "publishConfig": {
