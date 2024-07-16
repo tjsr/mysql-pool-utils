@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile_inline: |
         ARG MYSQL_VERSION 5.7
-        FROM mysql:${MYSQL_VERSION:-5.7} as mysql
+        FROM mysql:${MYSQL_VERSION:-5.7} AS mysql
 
         COPY resources/*.sql /docker-entrypoint-initdb.d/
     env_file:
