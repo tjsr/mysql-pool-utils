@@ -1,21 +1,26 @@
 import { ConnectionOptions, PoolOptions } from "mysql2";
-import { defaultConnectionOptions, getConnectionConfig } from "./unpooledConnection.js";
-import { intEnv, loadEnv } from "@tjsr/simple-env-utils";
+import { getConnectionConfig, getDefaultConnectionOptions } from "./unpooledConnection.js";
+
+import { intEnv } from "@tjsr/simple-env-utils";
 
 let poolOptions: PoolOptions|undefined = undefined;
+let defaultPoolOptions: PoolOptions;
 
-const defaultPoolOptions: PoolOptions = {
-  connectionLimit: intEnv('MYSQL_CONNECTION_POOL_SIZE', 5),
-} as const;
+const getDefaultPoolOptions = (): PoolOptions => {
+  if (defaultPoolOptions === undefined) {
+    defaultPoolOptions = {
+      connectionLimit: intEnv('MYSQL_CONNECTION_POOL_SIZE', 5),
+    } as const;
+  }
+  return defaultPoolOptions;
+};
 
 export const getPoolConfig = (poolConfigOverride?: PoolOptions): PoolOptions => {
   if (!poolOptions) {
-    loadEnv();
-
     const connectionOptions: ConnectionOptions = getConnectionConfig();
 
     poolOptions = {
-      ...defaultPoolOptions,
+      ...getDefaultPoolOptions(),
       ...connectionOptions,
       ...poolConfigOverride,
     } as PoolOptions;
@@ -29,7 +34,7 @@ export const getPoolConnectionOption = (optionName: keyof ConnectionOptions): st
     return (poolOptions as ConnectionOptions)[optionName];
   } else {
     return ({
-      ...defaultConnectionOptions,
-      ...defaultPoolOptions } as ConnectionOptions)[optionName];
+      ...getDefaultConnectionOptions(),
+      ...getDefaultPoolOptions() } as ConnectionOptions)[optionName];
   }
 };
