@@ -12,6 +12,7 @@
   },
   "scripts": {
     "build": "rimraf dist && tsc && tsc -p tsconfig.cjs.json",
+    "build:dev": "linkteam && tsc -w",
     "build:dist": "rimraf dist && tsc -p tsconfig.publish.json && tsc -p tsconfig.cjs.json",
     "check": "npx npm-check",
     "clean": "rimraf build dist coverage",
