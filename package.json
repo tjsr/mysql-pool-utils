@@ -25,7 +25,7 @@
     "db:up": "docker compose build && docker compose up -d",
     "db:down": "docker compose down",
     "disable:postinstall": "npm link @tjsr/simple-env-utils",
-    "test": "vitest --run && eslint src/*.ts"
+    "test": "wait-on tcp:127.0.0.1:23306 -t 20s && vitest --run && eslint src/*.ts"
   },
   "nodemonConfig": {
     "watch": [
@@ -55,13 +55,13 @@
   "homepage": "https://github.com/tjsr/mysql-pool-utils#readme",
   "devDependencies": {
     "@tjsr/eslint-config": "github:tjsr/eslint-config#main",
-    "@types/mysql": "^2.15.26",
+    "@tjsr/testutils": "^0.0.8",
     "@types/node": "^20.14.10",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4",
-    "vite": "^5.4.0",
-    "vitest": "^1.6.0"
+    "vitest": "^1.6.0",
+    "wait-on": "^7.2.0"
   },
   "dependencies": {
     "@tjsr/simple-env-utils": "^0.1.5",

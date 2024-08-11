@@ -2,6 +2,17 @@ import { Connection, ConnectionOptions } from "mysql2/promise";
 
 import { getUnpooledConnection } from "./unpooledConnection.js";
 
+const createTimeoutMessage = (
+  retries:number, maxRetries: number, timeoutMilliseconds: number, error: Error
+): string => {
+  let timeoutMessage = `Timed out - exceeded maximum time ${timeoutMilliseconds} ` +
+    `for retries (${retries}/${maxRetries})`;
+  const codeMessage = error.message ? `: ${error.message}` : '';
+  timeoutMessage += codeMessage;
+
+  return timeoutMessage;
+};
+
 export const persistentlyGetConnection = async (
   connectionOptionOverrides: ConnectionOptions,
   maxRetries: number,
@@ -25,10 +36,11 @@ export const persistentlyGetConnection = async (
         }
         const timeSinceStart = Date.now() - startTime;
         if (timeSinceStart > timeoutMilliseconds) {
-          console.warn(persistentlyGetConnection, `Timed out - exceeded maximum time ${timeoutMilliseconds} ` +
-            `for retries (${retries}/${maxRetries}): ${err}`);
+          const timeoutMessage = createTimeoutMessage(retries, maxRetries, timeoutMilliseconds, err as Error);
+
+          console.warn(persistentlyGetConnection, timeoutMessage);
           return reject(new Error(
-            `Timed out - exceeded maximum time ${timeoutMilliseconds} for retries (${retries}/${maxRetries}): ${err}`
+            timeoutMessage, { cause: err }
           ));
         }
         retries++;

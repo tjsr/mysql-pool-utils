@@ -1,5 +1,4 @@
 import { FieldPacket, PoolConnection, QueryResult } from 'mysql2/promise';
-import { afterAll, beforeAll, beforeEach, describe, expect, test } from 'vitest';
 import {
   closeConnectionPool,
   countOpenPools,
@@ -27,9 +26,20 @@ describe('basicMySqlInsert', () => {
 
   beforeAll(async () => {
     await getConnectionPool('basicMySqlInsert');
+    // try {
+    //   const pool = 
+    // } catch (err: any) {
+    //   fail('Failed in set-up trying to get connection pool', + err);
+    // }
   });
 
   beforeEach(async () => {
+    onTestFailed((e) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if (e.errors?.find((e:any) => e.code === 'ECONNREFUSED')) {
+        console.error(`Failed connecting to database`);
+      }
+    });
   });
 
   test('should insert a record', async () => {
