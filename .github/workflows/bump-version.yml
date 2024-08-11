@@ -67,7 +67,7 @@ jobs:
 
       - name: Bump and publish
         id: bump
-        uses: tjsr/gh-util-actions/version-bump-publish@release-in-branch
+        uses: tjsr/gh-util-actions/version-bump-publish@develop/release-in-branch
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           patchlevel: ${{ inputs.patchlevel }}
