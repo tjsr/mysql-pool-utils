@@ -3,7 +3,6 @@ import {
   PoolConnection,
   QueryResult
 } from "mysql2/promise";
-import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 import {
   closeConnectionPool,
   getConnection,

@@ -36,20 +36,24 @@ export const getConnectionConfig = (): ConnectionOptions => {
   return connectionOptions;
 };
 
+const dbConnString = (connectionOptions: ConnectionOptions): string => {
+  return `${connectionOptions.host}:${connectionOptions.port}/${connectionOptions.database}`;
+};
+
 export const getUnpooledConnection = (connectionOptionsOverride?: ConnectionOptions): Promise<Connection> => {
   const connectionOptions = {
     ...getDefaultConnectionOptions(),
     ...connectionOptionsOverride,
   } as const;
   
-  const connectionDetailString = `${connectionOptions.host}:${connectionOptions.port}/${connectionOptions.database}`;
+  const connectionDetailString = dbConnString(connectionOptions);
   return mysql.createConnection(connectionOptions).then((conn: mysql.Connection) => {
-    console.debug(getUnpooledConnection, `Got unpooled connection to ${connectionDetailString}.`);
+    const connectionMessage = `Got unpooled connection to ${connectionDetailString}.`;
+    console.debug(getUnpooledConnection, connectionMessage);
     return Promise.resolve(conn);
   }).catch((err) => {
-    console.warn(`Error connecting to ${connectionDetailString}: ${err}`);
-    return Promise.reject(new Error(
-      `Error connecting to ${connectionOptions.host}:${connectionOptions.port}/${connectionOptions.database}: ${err}`
-    ));
+    const errMsgString = `Error connecting to ${connectionDetailString}: [${err.code}] ${err.message}`;
+    console.warn(getUnpooledConnection, errMsgString);
+    return Promise.reject(err);
   });
 };
