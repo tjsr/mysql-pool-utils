@@ -38,6 +38,7 @@ jobs:
       NODE_VERSION: ${{ vars.NODE_VERSION }}
       NPM_VERSION: ${{ vars.NPM_VERSION }}
       NODE_AUTH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      USE_PR: ${{ ( inputs.usePr == 'true' || github.ref == 'refs/head/main' ) && 'true' || 'false' }}
     
     runs-on: ubuntu-latest
     steps:
@@ -66,14 +67,14 @@ jobs:
 
       - name: Bump and publish
         id: bump
-        uses: tjsr/gh-util-actions/version-bump-publish@main
+        uses: tjsr/gh-util-actions/version-bump-publish@release-in-branch
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           patchlevel: ${{ inputs.patchlevel }}
           no-tag: ${{ inputs.noTag }}
           no-publish: ${{ inputs.noPublish }}
           preid: ${{ github.ref != 'refs/head/main' && 'dev' || 'release' }}
-          requiresPr: ${{ ( inputs.usePr == 'true' || github.ref != 'refs/head/main' ) && 'true' || 'false' }}
+          requiresPr: ${{ env.USE_PR }}
 
       - name: "Confirm published: ${{ steps.bump.outputs.version }}"
         if: ${{ steps.bump.conclusion == 'success' }}
