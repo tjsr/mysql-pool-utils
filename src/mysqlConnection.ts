@@ -22,7 +22,7 @@ export const getConnectionPool = async (poolName: string): Promise<Pool> => {
     return connectionPools.get(poolName)!;
   } else {
     const connectionPoolPromise: Promise<Pool> = new Promise(
-      (resolve: (value: Pool | PromiseLike<Pool>) => void, reject) => {
+      (resolve: (_value: Pool | PromiseLike<Pool>) => void, reject) => {
         try {
           const connectionPool: Pool = createPool(getPoolConfig());
           // console.trace(`Created connection pool for id ${poolName}`);
