@@ -1,5 +1,5 @@
 name: Build mysql-pool-utils
-run-name: ${{ github.actor }} Running mysql-pool-utils build.
+run-name: Running mysql-pool-utils build.
 on: [push]
 jobs:
   build-mysql-pool-utils:
