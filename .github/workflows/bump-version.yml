@@ -73,7 +73,7 @@ jobs:
           patchlevel: ${{ inputs.patchlevel }}
           no-tag: ${{ inputs.noTag }}
           no-publish: ${{ inputs.noPublish }}
-          preid: ${{ github.ref != 'refs/head/main' && 'dev' || 'release' }}
+          preid: ${{ github.ref != 'refs/heads/main' && 'dev' || 'release' }}
           requiresPr: ${{ env.USE_PR }}
 
       - name: "Confirm published: ${{ steps.bump.outputs.version }}"
