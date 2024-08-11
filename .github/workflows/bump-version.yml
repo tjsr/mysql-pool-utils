@@ -65,6 +65,13 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           npm-version: ${{ env.NPM_VERSION }}
 
+      - name: Startup MySQL container
+        uses: hoverkraft-tech/compose-action@v2.0.0
+        with:
+          compose-file: docker-compose.yml
+          services: mysqldb
+          up-flags: '-d'
+
       - name: Bump and publish
         id: bump
         uses: tjsr/gh-util-actions/version-bump-publish@develop/release-in-branch
