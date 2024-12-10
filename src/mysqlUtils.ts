@@ -13,7 +13,7 @@ import { getPoolConfig } from './getPoolConfig.js';
 import { mysqlQuery } from './mysqlQuery.js';
 import { verifyDatabaseReady } from './verifyDatabaseReady.js';
 
-export type { PoolOptions } from 'mysql2';
+export type { PoolOptions, FieldPacket, PoolConnection, Connection, QueryResult, Pool } from 'mysql2/promise';
 
 export { basicMySqlInsert, getPoolConfig, getConnectionPool,
   safeReleaseConnection, getConnection, closeConnectionPool, mysqlQuery,
