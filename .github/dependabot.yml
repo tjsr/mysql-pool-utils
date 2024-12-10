@@ -9,7 +9,6 @@ updates:
     directory: "/"
     registries:
     - npm-github
-    - npm-npmjs
     schedule:
       interval: 'daily'
     assignees:
