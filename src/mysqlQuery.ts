@@ -15,11 +15,8 @@ const useExistingOrCreateNewConnection = (inputConnection: Promise<Connection>|u
 
 export const mysqlQuery = async (
   queryString: string, params: (
-    string|boolean|bigint|number)[], inputConnection?: Promise<Connection>, poolName = 'default'
+    string|boolean|bigint|number|null)[], inputConnection?: Promise<Connection>, poolName = 'default'
 ): Promise<[QueryResult, FieldPacket[]]> => {
-  // let connection: PoolConnection|undefined = inputConnection != inputConnection ?
-  // undefined : await getConnection(poolName);
-  // const useConnection = await (inputConnection) || connection;
   const [useConnection, newPoolConnection] = useExistingOrCreateNewConnection(inputConnection, poolName);
   const readyNewConnection = await newPoolConnection;
   const effectiveConnection = await (useConnection || newPoolConnection);
