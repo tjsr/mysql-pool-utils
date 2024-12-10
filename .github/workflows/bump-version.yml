@@ -37,7 +37,7 @@ jobs:
       NODE_CACHE_KEY: "npm-cache-${{ github.run_id }}-${{ github.run_number }}"
       NODE_VERSION: ${{ vars.NODE_VERSION }}
       NPM_VERSION: ${{ vars.NPM_VERSION }}
-      NODE_AUTH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      NODE_AUTH_TOKEN: "${{ github.token }}"
       USE_PR: ${{ ( inputs.usePr == 'true' || github.ref == 'refs/heads/main' ) && 'true' || 'false' }}
     
     runs-on: ubuntu-latest
@@ -58,8 +58,7 @@ jobs:
         id: node-setup
         uses: tjsr/gh-util-actions/node-common-setup@main
         with:
-          # token: ${{ secrets.PACKAGE_PUBLISH_TOKEN }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ github.token }}
           scope: "@tjsr"
           cache-key: ${{ env.NODE_CACHE_KEY}}
           node-version: ${{ env.NODE_VERSION }}
@@ -76,7 +75,7 @@ jobs:
         id: bump
         uses: tjsr/gh-util-actions/version-bump-publish@main
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ github.token }}
           patchlevel: ${{ inputs.patchlevel }}
           no-tag: ${{ inputs.noTag }}
           no-publish: ${{ inputs.noPublish }}
