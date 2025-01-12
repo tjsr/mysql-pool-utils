@@ -61,7 +61,7 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3",
     "vitest": "^2.1.8",
-    "wait-on": "^8.0.1"
+    "wait-on": "^8.0.2"
   },
   "dependencies": {
     "@tjsr/simple-env-utils": "^0.1.5",
