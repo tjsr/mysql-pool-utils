@@ -11,6 +11,7 @@ import {
 } from './mysqlConnection.js';
 import { generateTestIdNumber, mysqlConnectionString } from './testUtils.js';
 
+import { TestContext } from 'vitest';
 import { basicMySqlInsert } from './basicMySqlInsert.js';
 import { connectionDetails } from './setup-tests.js';
 import { deleteFromTable } from './deleteFromTable.js';
@@ -33,10 +34,12 @@ describe('basicMySqlInsert', () => {
     // }
   });
 
-  beforeEach(async () => {
-    onTestFailed((e) => {
+  beforeEach(async (t: TestContext & object) => {
+    // TODO: Fix this to use the correct type
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    t.onTestFailed = ((f: any): void => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      if (e.errors?.find((e:any) => e.code === 'ECONNREFUSED')) {
+      if (f.errors?.find((e: any) => e.code === 'ECONNREFUSED')) {
         console.error(`Failed connecting to database`);
       }
     });
