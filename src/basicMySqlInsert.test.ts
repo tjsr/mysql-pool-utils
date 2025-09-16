@@ -37,7 +37,7 @@ describe('basicMySqlInsert', () => {
   beforeEach(async (t: TestContext & object) => {
     // TODO: Fix this to use the correct type
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    t.onTestFailed = ((f: any): void => {
+    t.onTestFailed((f: any): void => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if (f.errors?.find((e: any) => e.code === 'ECONNREFUSED')) {
         console.error(`Failed connecting to database`);
