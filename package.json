@@ -55,7 +55,7 @@
   "homepage": "https://github.com/tjsr/mysql-pool-utils#readme",
   "devDependencies": {
     "@tjsr/eslint-config": "github:tjsr/eslint-config#main",
-    "@tjsr/testutils": "^0.0.8",
+    "@tjsr/testutils": "^0.0.11",
     "@types/node": "^22.18.4",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
@@ -64,7 +64,7 @@
     "wait-on": "^8.0.5"
   },
   "dependencies": {
-    "@tjsr/simple-env-utils": "^0.1.5",
+    "@tjsr/simple-env-utils": "^0.1.10",
     "mysql2": "^3.14.5"
   },
   "publishConfig": {
