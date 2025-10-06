@@ -39,7 +39,7 @@ jobs:
       run: npm list
 
     - name: Startup MySQL container
-      uses: hoverkraft-tech/compose-action@v2.3.0
+      uses: hoverkraft-tech/compose-action@v2.4.0
       with:
         compose-file: docker-compose.yml
         services: mysqldb
