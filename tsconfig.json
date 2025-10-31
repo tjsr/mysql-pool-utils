@@ -7,7 +7,7 @@
     "moduleResolution": "NodeNext",                       /* Specify how TypeScript looks up a file from a given module specifier. */
     "resolveJsonModule": true /* Enable importing .json files. */,
     "types": ["vitest/globals"],
-    "lib": ["ES2022"],
+    "lib": ["ES2022", "dom"],
 
     /* Emit */
     "declaration": true,                              /* Generate .d.ts files from TypeScript and JavaScript files in your project. */
