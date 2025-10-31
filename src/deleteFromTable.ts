@@ -1,6 +1,6 @@
 import { Connection, FieldPacket, QueryResult, ResultSetHeader } from 'mysql2/promise';
 
-import { mysqlExecute } from './mysqlExecute.js';
+import { mysqlExecute } from './mysqlExecute.ts';
 
 export const deleteFromTable = (
   table: string, whereClause: object, inputConnection?: Promise<Connection>
