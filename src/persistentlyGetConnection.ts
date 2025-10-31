@@ -40,7 +40,7 @@ export const persistentlyGetConnection = async (
 
           console.warn(persistentlyGetConnection, timeoutMessage);
           return reject(new Error(
-            timeoutMessage, { cause: err }
+            timeoutMessage
           ));
         }
         retries++;
