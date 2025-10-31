@@ -1,4 +1,4 @@
-import { getConnection, safeReleaseConnection } from './mysqlConnection.js';
+import { getConnection, safeReleaseConnection } from './mysqlConnection.ts';
 import mysql, { PoolConnection } from 'mysql2/promise';
 
 export const basicMySqlInsert = async (

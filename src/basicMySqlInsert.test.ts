@@ -8,15 +8,15 @@ import {
   listOpenPools,
   safeReleaseConnection,
   setErrorWhenPoolNamed
-} from './mysqlConnection.js';
-import { generateTestIdNumber, mysqlConnectionString } from './testUtils.js';
+} from './mysqlConnection.ts';
+import { generateTestIdNumber, mysqlConnectionString } from './testUtils.ts';
 
 import { TestContext } from 'vitest';
-import { basicMySqlInsert } from './basicMySqlInsert.js';
-import { connectionDetails } from './setup-tests.js';
-import { deleteFromTable } from './deleteFromTable.js';
-import { mysqlQuery } from './mysqlQuery.js';
-import { verifyDatabaseReady } from './verifyDatabaseReady.js';
+import { basicMySqlInsert } from './basicMySqlInsert.ts';
+import { connectionDetails } from './setup-tests.ts';
+import { deleteFromTable } from './deleteFromTable.ts';
+import { mysqlQuery } from './mysqlQuery.ts';
+import { verifyDatabaseReady } from './verifyDatabaseReady.ts';
 
 describe('basicMySqlInsert', () => {
   beforeAll(async () => {

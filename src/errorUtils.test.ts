@@ -1,6 +1,7 @@
 // import { ErrnoException } from 'node:os';
+
 import { QueryError } from 'mysql2';
-import { errMessageOrCodeMessage } from './errorUtils.js';
+import { errMessageOrCodeMessage } from './errorUtils.ts';
 
 const errorWithCode: QueryError = {
   code: 'ERROR_CODE',
