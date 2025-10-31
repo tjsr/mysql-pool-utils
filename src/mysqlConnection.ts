@@ -1,6 +1,6 @@
 import { Pool, PoolConnection, createPool } from 'mysql2/promise';
 
-import { getPoolConfig } from './getPoolConfig.js';
+import { getPoolConfig } from './getPoolConfig.ts';
 
 const connectionPools: Map<string, Promise<Pool>> = new Map<string, Promise<Pool>>();
 

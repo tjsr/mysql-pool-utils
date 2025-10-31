@@ -14,10 +14,10 @@ import {
 import { generateTestIdNumber, mysqlConnectionString } from "./testUtils.js";
 
 import { basicMySqlInsert } from "./basicMySqlInsert.js";
-import { connectionDetails } from './setup-tests.js';
+import { connectionDetails } from './setup-tests.ts';
 import { deleteFromTable } from "./deleteFromTable.js";
 import { mysqlQuery } from "./mysqlQuery.js";
-import { verifyDatabaseReady } from './verifyDatabaseReady.js';
+import { verifyDatabaseReady } from './verifyDatabaseReady.ts';
 
 describe('deleteFromTable', () => {
   beforeAll(async () => {
