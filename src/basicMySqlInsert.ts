@@ -1,5 +1,5 @@
-import { getConnection, safeReleaseConnection } from './mysqlConnection.js';
-import mysql, { PoolConnection } from 'mysql2/promise';
+import { getConnection, safeReleaseConnection } from './mysqlConnection.ts';
+import mysql, { PoolConnection, QueryError } from 'mysql2/promise';
 
 export const basicMySqlInsert = async (
   table: string,
@@ -25,7 +25,7 @@ export const basicMySqlInsert = async (
         return conn.execute(query).then(() => {
           safeReleaseConnection(connection);
           return resolve();
-        }).catch((err) => {
+        }).catch((err: QueryError) => {
           safeReleaseConnection(connection);
           if (err && err.sqlState === '23000') {
             console.error('Failed inserting with primary key violation');
