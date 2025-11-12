@@ -71,7 +71,7 @@
     "registry": "https://npm.pkg.github.com"
   },
   "optionalDependencies": {
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.11"
   },
   "engines": {
     "node": ">=20.12.1"
