@@ -65,7 +65,7 @@
   },
   "dependencies": {
     "@tjsr/simple-env-utils": "^0.1.10",
-    "mysql2": "^3.16.1"
+    "mysql2": "^3.16.2"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
