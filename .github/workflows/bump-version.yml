@@ -65,7 +65,7 @@ jobs:
           npm-version: ${{ env.NPM_VERSION }}
 
       - name: Startup MySQL container
-        uses: hoverkraft-tech/compose-action@v2.4.3
+        uses: hoverkraft-tech/compose-action@v2.5.0
         with:
           compose-file: docker-compose.yml
           services: mysqldb
