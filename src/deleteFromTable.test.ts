@@ -3,6 +3,10 @@ import {
   PoolConnection,
   QueryResult
 } from "mysql2/promise";
+
+
+import { basicMySqlInsert } from "./basicMySqlInsert.js";
+import { deleteFromTable } from "./deleteFromTable.js";
 import {
   closeConnectionPool,
   getConnection,
@@ -11,12 +15,9 @@ import {
   safeReleaseConnection,
   setErrorWhenPoolNamed
 } from "./mysqlConnection.js";
-import { generateTestIdNumber, mysqlConnectionString } from "./testUtils.js";
-
-import { basicMySqlInsert } from "./basicMySqlInsert.js";
-import { connectionDetails } from './setup-tests.ts';
-import { deleteFromTable } from "./deleteFromTable.js";
 import { mysqlQuery } from "./mysqlQuery.js";
+import { connectionDetails } from './setup-tests.ts';
+import { generateTestIdNumber, mysqlConnectionString } from "./testUtils.js";
 import { verifyDatabaseReady } from './verifyDatabaseReady.ts';
 
 describe('deleteFromTable', () => {
@@ -49,7 +50,13 @@ describe('deleteFromTable', () => {
       };
   
       await expect(basicMySqlInsert(table, fields, values, testConnection)).resolves.not.toThrow();
-      const testRowsDeleted = await deleteFromTable(table, { objectId: testTagObjectId }, testConnection);
+      const nonMatchingRowsDeleted = await deleteFromTable(
+        table, { objectId: testTagObjectId, tag: 'not-the-inserted-tag' }, testConnection
+      );
+      expect(nonMatchingRowsDeleted).toBe(0);
+      const testRowsDeleted = await deleteFromTable(
+        table, { objectId: testTagObjectId, tag: 'test' }, testConnection
+      );
       expect(testRowsDeleted).toBe(1);
 
       const queryResultsPromise = mysqlQuery(
@@ -66,6 +73,10 @@ describe('deleteFromTable', () => {
     } finally {
       safeReleaseConnection(connection);
     }
+  });
+
+  test('Should reject an empty condition rather than delete all rows', async () => {
+    await expect(deleteFromTable('Tags', {})).rejects.toThrow('at least one condition');
   });
 
   afterAll(async () => {
