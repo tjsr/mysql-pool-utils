@@ -3,10 +3,6 @@ import {
   PoolConnection,
   QueryResult
 } from "mysql2/promise";
-
-
-import { basicMySqlInsert } from "./basicMySqlInsert.js";
-import { deleteFromTable } from "./deleteFromTable.js";
 import {
   closeConnectionPool,
   getConnection,
@@ -15,9 +11,12 @@ import {
   safeReleaseConnection,
   setErrorWhenPoolNamed
 } from "./mysqlConnection.js";
-import { mysqlQuery } from "./mysqlQuery.js";
-import { connectionDetails } from './setup-tests.ts';
 import { generateTestIdNumber, mysqlConnectionString } from "./testUtils.js";
+
+import { basicMySqlInsert } from "./basicMySqlInsert.js";
+import { connectionDetails } from './setup-tests.ts';
+import { deleteFromTable } from "./deleteFromTable.js";
+import { mysqlQuery } from "./mysqlQuery.js";
 import { verifyDatabaseReady } from './verifyDatabaseReady.ts';
 
 describe('deleteFromTable', () => {
