@@ -2,6 +2,8 @@
   "extends": "./tsconfig.publish.json",
   "compilerOptions": {
     "outDir": "./dist/cjs",
+    // Published simple-env-utils omits require.types; use its existing typed ESM declaration.
+    "paths": { "@tjsr/simple-env-utils": ["./node_modules/@tjsr/simple-env-utils/dist/esm/utils.d.ts"] },
     "module": "commonjs",
     "moduleResolution": "Bundler",
     "lib": ["dom"],
