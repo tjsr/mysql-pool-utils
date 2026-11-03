@@ -3,16 +3,20 @@ run-name: Running mysql-pool-utils build.
 on: [push]
 jobs:
   build-mysql-pool-utils:
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [22, 24]
     runs-on: ubuntu-latest
     env:
       NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
     - name: Check out repository code
-      uses: actions/checkout@main
+      uses: actions/checkout@v7
 
     - name: Cache node modules
       id: cache-npm
-      uses: actions/cache@main
+      uses: actions/cache@v5
       env:
         cache-name: cache-node-modules
       with:
@@ -28,8 +32,12 @@ jobs:
     # Setup .npmrc file to publish to GitHub Packages
     - uses: actions/setup-node@v7
       with:
-        node-version: ${{ vars.NODE_VERSION }}
+        node-version: ${{ matrix.node }}
+        check-latest: true
         registry-url: 'https://npm.pkg.github.com'
+
+    - name: Install latest npm
+      run: npm install --global npm@latest --registry=https://registry.npmjs.org
 
     - run: npm ci
 
