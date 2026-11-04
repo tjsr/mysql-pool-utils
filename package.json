@@ -28,7 +28,7 @@
     "link": "linkteam",
     "lint": "node --require ./scripts/eslint-typescript-compat.cjs ./node_modules/eslint/bin/eslint.js --config eslint.config.mjs src/*.ts",
     "lint:fix": "eslint --config eslint.config.mjs --fix src/*.ts",
-    "prepack": "npm run lint && npm test && npm run build",
+    "prepack": "npm run lint && npm test && npm run build && npm run test:package",
     "prepublishOnly": "npm run clean && npm test && npm run build",
     "db:up": "docker compose build && docker compose up -d",
     "db:down": "docker compose down",

@@ -36,3 +36,7 @@ The workflow files for this repo require the NODE_VERSION and NPM_VERSION var to
   gh variable set NODE_VERSION -b "20.15.1"
   gh variable set NPM_VERSION -b "10.8.2"
 ```
+
+The package requires Node.js 24.21.0 or later and npm 12.1.0 or later, matching
+its simple-env-utils dependency. CI tests Node 24 and 26; Node 22 is diagnostic.
+Both ESM and CommonJS entry points include matching TypeScript declarations.

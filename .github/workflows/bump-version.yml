@@ -35,8 +35,8 @@ jobs:
     name: "Bump version number and publish"
     env:
       NODE_CACHE_KEY: "npm-cache-${{ github.run_id }}-${{ github.run_number }}"
-      NODE_VERSION: ${{ vars.NODE_VERSION }}
-      NPM_VERSION: ${{ vars.NPM_VERSION }}
+      NODE_VERSION: '24.21.0'
+      NPM_VERSION: '12.2.1'
       NODE_AUTH_TOKEN: "${{ github.token }}"
       USE_PR: ${{ ( inputs.usePr == 'true' || github.ref == 'refs/heads/main' ) && 'true' || 'false' }}
     
@@ -70,6 +70,10 @@ jobs:
           compose-file: docker-compose.yml
           services: mysqldb
           up-flags: '-d'
+
+      - name: Verify prospective release version
+        if: github.ref == 'refs/heads/fix/cjs-package'
+        run: npm ci && node scripts/check-release.cjs 0.2.2
 
       - name: Bump and publish
         id: bump

@@ -67,6 +67,10 @@ jobs:
         DATABASE_CHECK_RETRIES: 20
         DATABASE_CHECK_DELAY: 500
   
+    - name: Verify release baseline (read only)
+      if: matrix.node == 24
+      run: node scripts/check-release.cjs
+
     - run: npm run build
 
     - name: Verify packed ESM/CommonJS runtime and declarations
