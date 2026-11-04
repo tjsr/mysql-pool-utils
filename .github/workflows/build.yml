@@ -75,3 +75,6 @@ jobs:
 
     - name: Verify packed ESM/CommonJS runtime and declarations
       run: npm run test:package
+
+    - name: Verify package lifecycle with a dry run
+      run: npm pack --dry-run

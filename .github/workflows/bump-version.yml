@@ -86,6 +86,12 @@ jobs:
           preid: ${{ github.ref != 'refs/heads/main' && 'dev' || 'release' }}
           requiresPr: ${{ env.USE_PR }}
 
+      - name: Verify the exact published artifact
+        if: steps.bump.outputs.published == 'true'
+        env:
+          PACKAGE_TEST_SPEC: '@tjsr/mysql-pool-utils@${{ steps.bump.outputs.version }}'
+        run: npm run test:package
+
       - name: "Confirm published: ${{ steps.bump.outputs.version }}"
         if: ${{ steps.bump.conclusion == 'success' }}
         run: |
