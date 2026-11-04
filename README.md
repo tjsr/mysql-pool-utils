@@ -29,14 +29,18 @@ specified in `.env.test`.  You can run up a container using `npm db:up` and tear
 
 ## Repo configuration
 
-The workflow files for this repo require the NODE_VERSION and NPM_VERSION var to be specified.
+The version-bump workflow selects Node.js 24.21.0 and npm 12.2.1 directly.
+Other workflows that use repository variables should match that supported toolchain.
 
 ```bash
   gh auth login
-  gh variable set NODE_VERSION -b "20.15.1"
-  gh variable set NPM_VERSION -b "10.8.2"
+  gh variable set NODE_VERSION -b "24.21.0"
+  gh variable set NPM_VERSION -b "12.2.1"
 ```
 
 The package requires Node.js 24.21.0 or later and npm 12.1.0 or later, matching
 its simple-env-utils dependency. CI tests Node 24 and 26; Node 22 is diagnostic.
 Both ESM and CommonJS entry points include matching TypeScript declarations.
+
+Version 0.2.2 fixes the CommonJS package boundary and includes runtime JavaScript
+with matching ESM and CommonJS TypeScript declarations.
