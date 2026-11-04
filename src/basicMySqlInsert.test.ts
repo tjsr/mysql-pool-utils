@@ -1,4 +1,8 @@
 import { FieldPacket, PoolConnection, QueryResult } from 'mysql2/promise';
+import { TestContext } from 'vitest';
+
+import { basicMySqlInsert } from './basicMySqlInsert.ts';
+import { deleteFromTable } from './deleteFromTable.ts';
 import {
   closeConnectionPool,
   countOpenPools,
@@ -7,15 +11,11 @@ import {
   isConnectionPoolOpen,
   listOpenPools,
   safeReleaseConnection,
-  setErrorWhenPoolNamed
+  setErrorWhenPoolNamed,
 } from './mysqlConnection.ts';
-import { generateTestIdNumber, mysqlConnectionString } from './testUtils.ts';
-
-import { TestContext } from 'vitest';
-import { basicMySqlInsert } from './basicMySqlInsert.ts';
-import { connectionDetails } from './setup-tests.ts';
-import { deleteFromTable } from './deleteFromTable.ts';
 import { mysqlQuery } from './mysqlQuery.ts';
+import { connectionDetails } from './setup-tests.ts';
+import { generateTestIdNumber, mysqlConnectionString } from './testUtils.ts';
 import { verifyDatabaseReady } from './verifyDatabaseReady.ts';
 
 describe('basicMySqlInsert', () => {
@@ -28,7 +28,7 @@ describe('basicMySqlInsert', () => {
   beforeAll(async () => {
     await getConnectionPool('basicMySqlInsert');
     // try {
-    //   const pool = 
+    //   const pool =
     // } catch (err: any) {
     //   fail('Failed in set-up trying to get connection pool', + err);
     // }
@@ -53,7 +53,9 @@ describe('basicMySqlInsert', () => {
 
     try {
       const initialQueryPromise: Promise<[QueryResult, FieldPacket[]]> = mysqlQuery(
-        `SELECT * FROM ${table} WHERE objectId = ?`, [testTagObjectId], testConnection
+        `SELECT * FROM ${table} WHERE objectId = ?`,
+        [testTagObjectId],
+        testConnection
       );
       await expect(initialQueryPromise).resolves.not.toThrow();
       const initialQueryResults: [QueryResult, FieldPacket[]] = await initialQueryPromise;
@@ -62,7 +64,7 @@ describe('basicMySqlInsert', () => {
       const rowsDeleted = await deleteFromTable(table, { objectId: testTagObjectId }, testConnection);
       expect(rowsDeleted).toBeGreaterThanOrEqual(0);
       expect(rowsDeleted).toEqual(currentMatchingRows);
-  
+
       // Arrange
       const fields = ['objectId', 'tag', 'createdByUserId'];
       const values = {
@@ -70,10 +72,12 @@ describe('basicMySqlInsert', () => {
         objectId: testTagObjectId,
         tag: 'test',
       };
-  
+
       await expect(basicMySqlInsert(table, fields, values, testConnection)).resolves.not.toThrow();
       const queryPromise: Promise<[QueryResult, FieldPacket[]]> = mysqlQuery(
-        `SELECT * FROM ${table} WHERE objectId = ?`, [testTagObjectId], testConnection
+        `SELECT * FROM ${table} WHERE objectId = ?`,
+        [testTagObjectId],
+        testConnection
       );
       await expect(queryPromise).resolves.not.toThrow();
       await queryPromise;
@@ -82,7 +86,7 @@ describe('basicMySqlInsert', () => {
       if (safeReleaseConnection(connection)) {
         return Promise.resolve();
       } else {
-        throw new Error("Failed to release connection in finally block.");
+        throw new Error('Failed to release connection in finally block.');
       }
     } catch (err) {
       safeReleaseConnection(connection);

@@ -1,7 +1,8 @@
 import { QueryError } from 'mysql2';
+
 import { errMessageOrCodeMessage } from './errorUtils.ts';
 
-type QueryErrorWithMessage = QueryError & { message: string, name: string };
+type QueryErrorWithMessage = QueryError & { message: string; name: string };
 
 const errorWithCode: QueryErrorWithMessage = {
   code: 'ERROR_CODE',
@@ -16,7 +17,8 @@ const errorWithoutCode: Partial<QueryErrorWithMessage> = {
   name: 'ErrorWithoutCode',
 };
 
-const errorCodeWithEmptyMessage: QueryErrorWithMessage = { // NodeJS.ErrnoException = {
+const errorCodeWithEmptyMessage: QueryErrorWithMessage = {
+  // NodeJS.ErrnoException = {
   code: 'ERROR_CODE',
   fatal: true,
   message: '',

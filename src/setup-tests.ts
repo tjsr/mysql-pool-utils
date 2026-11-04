@@ -1,5 +1,4 @@
 import { intEnv, loadEnv, setTestMode } from '@tjsr/simple-env-utils';
-
 import { ConnectionOptions } from 'mysql2/promise';
 
 loadEnv();

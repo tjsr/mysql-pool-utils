@@ -1,6 +1,7 @@
-import { DEFAULT_CONNECTION_TIMEOUT, DEFAULT_MYSQL_PORT } from "./defaults.js";
-import { booleanEnv, intEnv, requireEnv } from "@tjsr/simple-env-utils";
-import mysql, { Connection, ConnectionOptions } from "mysql2/promise";
+import { booleanEnv, intEnv, requireEnv } from '@tjsr/simple-env-utils';
+import mysql, { Connection, ConnectionOptions } from 'mysql2/promise';
+
+import { DEFAULT_CONNECTION_TIMEOUT, DEFAULT_MYSQL_PORT } from './defaults.js';
 
 let connectionOptions: ConnectionOptions | undefined = undefined;
 let defaultConnectionOptions: ConnectionOptions;
@@ -45,15 +46,18 @@ export const getUnpooledConnection = (connectionOptionsOverride?: ConnectionOpti
     ...getDefaultConnectionOptions(),
     ...connectionOptionsOverride,
   } as const;
-  
+
   const connectionDetailString = dbConnString(connectionOptions);
-  return mysql.createConnection(connectionOptions).then((conn: mysql.Connection) => {
-    const connectionMessage = `Got unpooled connection to ${connectionDetailString}.`;
-    console.debug(getUnpooledConnection, connectionMessage);
-    return Promise.resolve(conn);
-  }).catch((err) => {
-    const errMsgString = `Error connecting to ${connectionDetailString}: [${err.code}] ${err.message}`;
-    console.warn(getUnpooledConnection, errMsgString);
-    return Promise.reject(err);
-  });
+  return mysql
+    .createConnection(connectionOptions)
+    .then((conn: mysql.Connection) => {
+      const connectionMessage = `Got unpooled connection to ${connectionDetailString}.`;
+      console.debug(getUnpooledConnection, connectionMessage);
+      return Promise.resolve(conn);
+    })
+    .catch((err) => {
+      const errMsgString = `Error connecting to ${connectionDetailString}: [${err.code}] ${err.message}`;
+      console.warn(getUnpooledConnection, errMsgString);
+      return Promise.reject(err);
+    });
 };

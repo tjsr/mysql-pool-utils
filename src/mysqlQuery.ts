@@ -1,8 +1,11 @@
-import { Connection, FieldPacket, PoolConnection, QueryResult } from "mysql2/promise";
-import { getConnection, safeReleaseConnection } from "./mysqlConnection.js";
+import { Connection, FieldPacket, PoolConnection, QueryResult } from 'mysql2/promise';
 
-const useExistingOrCreateNewConnection = (inputConnection: Promise<Connection>|undefined, poolName: string):
-  [Promise<Connection>|undefined, Promise<PoolConnection>|undefined] => {
+import { getConnection, safeReleaseConnection } from './mysqlConnection.js';
+
+const useExistingOrCreateNewConnection = (
+  inputConnection: Promise<Connection> | undefined,
+  poolName: string
+): [Promise<Connection> | undefined, Promise<PoolConnection> | undefined] => {
   if (inputConnection !== undefined) {
     return [inputConnection, undefined];
   }
@@ -14,27 +17,27 @@ const useExistingOrCreateNewConnection = (inputConnection: Promise<Connection>|u
 };
 
 export const mysqlQuery = async (
-  queryString: string, params: (
-    string|boolean|bigint|number|null)[], inputConnection?: Promise<Connection>, poolName = 'default'
+  queryString: string,
+  params: (string | boolean | bigint | number | null)[],
+  inputConnection?: Promise<Connection>,
+  poolName = 'default'
 ): Promise<[QueryResult, FieldPacket[]]> => {
   const [useConnection, newPoolConnection] = useExistingOrCreateNewConnection(inputConnection, poolName);
   const readyNewConnection = await newPoolConnection;
   const effectiveConnection = await (useConnection || newPoolConnection);
-  
+
   return new Promise((resolve, reject) => {
-    effectiveConnection!.query({ rowsAsArray: true, sql: queryString }, params)
+    effectiveConnection!
+      .query({ rowsAsArray: true, sql: queryString }, params)
       .then((results: [QueryResult, FieldPacket[]]) => {
         safeReleaseConnection(readyNewConnection);
         if (results == undefined) {
-          return reject(
-            new Error(
-              `Simple query result was undefined.`
-            )
-          );
+          return reject(new Error(`Simple query result was undefined.`));
         }
 
         return resolve(results);
-      }).catch((err) => {
+      })
+      .catch((err) => {
         safeReleaseConnection(readyNewConnection);
         return reject(err);
       });
