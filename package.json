@@ -1,19 +1,27 @@
 {
   "name": "@tjsr/mysql-pool-utils",
-  "version": "0.1.11",
+  "version": "0.2.1",
   "description": "Connection handling and pooling utils for MySQL",
   "main": "dist/esm/mysqlUtils.js",
   "module": "dist/esm/mysqlUtils.js",
   "types": "dist/esm/mysqlUtils.d.ts",
   "type": "module",
   "exports": {
-    "require": "./dist/cjs/mysqlUtils.js",
-    "import": "./dist/esm/mysqlUtils.js"
+    ".": {
+      "import": {
+        "types": "./dist/esm/mysqlUtils.d.ts",
+        "default": "./dist/esm/mysqlUtils.js"
+      },
+      "require": {
+        "types": "./dist/cjs/mysqlUtils.d.ts",
+        "default": "./dist/cjs/mysqlUtils.js"
+      }
+    }
   },
   "scripts": {
-    "build": "rimraf dist && tsc && tsc -p tsconfig.cjs.json",
+    "build": "npm run build:dist",
     "build:dev": "linkteam && tsc -w",
-    "build:dist": "rimraf dist && tsc -p tsconfig.publish.json && tsc -p tsconfig.cjs.json",
+    "build:dist": "rimraf dist && tsc -p tsconfig.publish.json && tsc -p tsconfig.cjs.json && node scripts/finalize-package.cjs",
     "check": "npx npm-check",
     "clean": "rimraf build dist coverage",
     "clean:all": "rimraf build dist coverage node_modules",
@@ -25,7 +33,8 @@
     "db:up": "docker compose build && docker compose up -d",
     "db:down": "docker compose down",
     "disable:postinstall": "npm link @tjsr/simple-env-utils",
-    "test": "wait-on tcp:127.0.0.1:23306 -t 20s && vitest --run && npm run lint"
+    "test": "wait-on tcp:127.0.0.1:23306 -t 20s && vitest --run && npm run lint",
+    "test:package": "node scripts/test-package.cjs"
   },
   "nodemonConfig": {
     "watch": [
@@ -65,7 +74,7 @@
     "wait-on": "^9.5.1"
   },
   "dependencies": {
-    "@tjsr/simple-env-utils": "^0.1.10",
+    "@tjsr/simple-env-utils": "^0.1.11",
     "mysql2": "^3.24.6"
   },
   "publishConfig": {
@@ -75,6 +84,10 @@
     "nodemon": "^3.1.14"
   },
   "engines": {
-    "node": ">=20.12.1"
-  }
+    "node": ">=24.21.0",
+    "npm": ">=12.1.0"
+  },
+  "files": [
+    "dist"
+  ]
 }
