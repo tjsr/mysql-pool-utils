@@ -1,9 +1,9 @@
-import { ConnectionOptions, PoolOptions } from "mysql2";
-import { getConnectionConfig, getDefaultConnectionOptions } from "./unpooledConnection.js";
+import { intEnv } from '@tjsr/simple-env-utils';
+import { ConnectionOptions, PoolOptions } from 'mysql2';
 
-import { intEnv } from "@tjsr/simple-env-utils";
+import { getConnectionConfig, getDefaultConnectionOptions } from './unpooledConnection.js';
 
-let poolOptions: PoolOptions|undefined = undefined;
+let poolOptions: PoolOptions | undefined = undefined;
 let defaultPoolOptions: PoolOptions;
 
 const getDefaultPoolOptions = (): PoolOptions => {
@@ -33,8 +33,11 @@ export const getPoolConnectionOption = (optionName: keyof ConnectionOptions): st
   if (poolOptions) {
     return (poolOptions as ConnectionOptions)[optionName];
   } else {
-    return ({
-      ...getDefaultConnectionOptions(),
-      ...getDefaultPoolOptions() } as ConnectionOptions)[optionName];
+    return (
+      {
+        ...getDefaultConnectionOptions(),
+        ...getDefaultPoolOptions(),
+      } as ConnectionOptions
+    )[optionName];
   }
 };

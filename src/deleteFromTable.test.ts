@@ -1,22 +1,18 @@
-import {
-  FieldPacket,
-  PoolConnection,
-  QueryResult
-} from "mysql2/promise";
+import { FieldPacket, PoolConnection, QueryResult } from 'mysql2/promise';
+
+import { basicMySqlInsert } from './basicMySqlInsert.js';
+import { deleteFromTable } from './deleteFromTable.js';
 import {
   closeConnectionPool,
   getConnection,
   getConnectionPool,
   isConnectionPoolOpen,
   safeReleaseConnection,
-  setErrorWhenPoolNamed
-} from "./mysqlConnection.js";
-import { generateTestIdNumber, mysqlConnectionString } from "./testUtils.js";
-
-import { basicMySqlInsert } from "./basicMySqlInsert.js";
+  setErrorWhenPoolNamed,
+} from './mysqlConnection.js';
+import { mysqlQuery } from './mysqlQuery.js';
 import { connectionDetails } from './setup-tests.ts';
-import { deleteFromTable } from "./deleteFromTable.js";
-import { mysqlQuery } from "./mysqlQuery.js";
+import { generateTestIdNumber, mysqlConnectionString } from './testUtils.js';
 import { verifyDatabaseReady } from './verifyDatabaseReady.ts';
 
 describe('deleteFromTable', () => {
@@ -30,7 +26,7 @@ describe('deleteFromTable', () => {
     await getConnectionPool('deleteFromTable');
   });
 
-  test('Should remove values from a table', async() => {
+  test('Should remove values from a table', async () => {
     const testTagObjectId = generateTestIdNumber('deleteFromTable');
     const table = 'Tags';
     const testConnection: Promise<PoolConnection> = getConnection('deleteFromTable');
@@ -39,7 +35,7 @@ describe('deleteFromTable', () => {
     try {
       const rowsDeleted = await deleteFromTable(table, { objectId: testTagObjectId }, testConnection);
       expect(rowsDeleted).toBeGreaterThanOrEqual(0);
-  
+
       // Arrange
       const fields = ['objectId', 'tag', 'createdByUserId'];
       const values = {
@@ -47,19 +43,21 @@ describe('deleteFromTable', () => {
         objectId: testTagObjectId,
         tag: 'test',
       };
-  
+
       await expect(basicMySqlInsert(table, fields, values, testConnection)).resolves.not.toThrow();
       const nonMatchingRowsDeleted = await deleteFromTable(
-        table, { objectId: testTagObjectId, tag: 'not-the-inserted-tag' }, testConnection
+        table,
+        { objectId: testTagObjectId, tag: 'not-the-inserted-tag' },
+        testConnection
       );
       expect(nonMatchingRowsDeleted).toBe(0);
-      const testRowsDeleted = await deleteFromTable(
-        table, { objectId: testTagObjectId, tag: 'test' }, testConnection
-      );
+      const testRowsDeleted = await deleteFromTable(table, { objectId: testTagObjectId, tag: 'test' }, testConnection);
       expect(testRowsDeleted).toBe(1);
 
       const queryResultsPromise = mysqlQuery(
-        `SELECT * FROM ${table} WHERE objectId = ?`,[testTagObjectId], testConnection
+        `SELECT * FROM ${table} WHERE objectId = ?`,
+        [testTagObjectId],
+        testConnection
       );
       await expect(queryResultsPromise).resolves.not.toThrow();
 

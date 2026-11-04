@@ -1,5 +1,6 @@
-import { ConnectionOptions } from 'mysql2/promise';
 import crypto from 'crypto';
+
+import { ConnectionOptions } from 'mysql2/promise';
 
 const CURRENT_TEST_RUN_ID = Math.floor(Math.random() * 1000);
 
@@ -10,7 +11,7 @@ export const generateSuiteId = (suiteId: string, suiteRange = 1000): number => {
 };
 
 export const generateTestIdNumber = (suiteId: string, suiteRange = 1000, range = 1000000): number => {
-  const testIdNumber = (generateSuiteId(suiteId) * suiteRange) + CURRENT_TEST_RUN_ID + range;
+  const testIdNumber = generateSuiteId(suiteId) * suiteRange + CURRENT_TEST_RUN_ID + range;
   return testIdNumber;
 };
 
@@ -20,11 +21,7 @@ export const generateTestIdString = (suiteId: string, range = 1000): string => {
 };
 
 export const mysqlConnectionString = (connectionDetails: ConnectionOptions): string => {
-  const [u, h, db] = [
-    connectionDetails.user,
-    connectionDetails.host,
-    connectionDetails.database,
-  ];
+  const [u, h, db] = [connectionDetails.user, connectionDetails.host, connectionDetails.database];
   return `mysql://${u}:***@${h}/${db}`;
 };
 
