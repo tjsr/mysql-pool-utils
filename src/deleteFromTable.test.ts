@@ -49,7 +49,13 @@ describe('deleteFromTable', () => {
       };
   
       await expect(basicMySqlInsert(table, fields, values, testConnection)).resolves.not.toThrow();
-      const testRowsDeleted = await deleteFromTable(table, { objectId: testTagObjectId }, testConnection);
+      const nonMatchingRowsDeleted = await deleteFromTable(
+        table, { objectId: testTagObjectId, tag: 'not-the-inserted-tag' }, testConnection
+      );
+      expect(nonMatchingRowsDeleted).toBe(0);
+      const testRowsDeleted = await deleteFromTable(
+        table, { objectId: testTagObjectId, tag: 'test' }, testConnection
+      );
       expect(testRowsDeleted).toBe(1);
 
       const queryResultsPromise = mysqlQuery(
@@ -66,6 +72,10 @@ describe('deleteFromTable', () => {
     } finally {
       safeReleaseConnection(connection);
     }
+  });
+
+  test('Should reject an empty condition rather than delete all rows', async () => {
+    await expect(deleteFromTable('Tags', {})).rejects.toThrow('at least one condition');
   });
 
   afterAll(async () => {
