@@ -1,10 +1,10 @@
 import { getConnection, safeReleaseConnection } from './mysqlConnection.ts';
-import mysql, { PoolConnection, QueryError } from 'mysql2/promise';
+import mysql, { PoolConnection, QueryError, SqlValue } from 'mysql2/promise';
 
 export const basicMySqlInsert = async (
   table: string,
   _fields: string[],
-  values: unknown,
+  values: SqlValue,
   inputConnection?: Promise<PoolConnection>
 ): Promise<void> => {
   if (values === undefined) {
