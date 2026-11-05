@@ -29,13 +29,17 @@ specified in `.env.test`.  You can run up a container using `npm db:up` and tear
 
 ## Repo configuration
 
-The version-bump workflow selects Node.js 24.21.0 and npm 12.2.1 directly.
-Other workflows that use repository variables should match that supported toolchain.
+The version-bump workflow reads its Node.js and npm versions from the repository
+variables `NODE_VERSION` and `NPM_VERSION`. They are currently set to Node.js
+24.21.0 and npm 12.2.1. The workflow fails with an actionable error if either
+variable is missing.
+
+Update the supported toolchain when a newer version is required:
 
 ```bash
   gh auth login
-  gh variable set NODE_VERSION -b "24.21.0"
-  gh variable set NPM_VERSION -b "12.2.1"
+  gh variable set NODE_VERSION --repo tjsr/mysql-pool-utils --body "24.21.0"
+  gh variable set NPM_VERSION --repo tjsr/mysql-pool-utils --body "12.2.1"
 ```
 
 The package requires Node.js 24.21.0 or later and npm 12.1.0 or later, matching

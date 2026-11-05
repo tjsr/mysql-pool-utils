@@ -35,8 +35,8 @@ jobs:
     name: "Bump version number and publish"
     env:
       NODE_CACHE_KEY: "npm-cache-${{ github.run_id }}-${{ github.run_number }}"
-      NODE_VERSION: '24.21.0'
-      NPM_VERSION: '12.2.1'
+      NODE_VERSION: ${{ vars.NODE_VERSION }}
+      NPM_VERSION: ${{ vars.NPM_VERSION }}
       NODE_AUTH_TOKEN: "${{ github.token }}"
       USE_PR: ${{ ( inputs.usePr == 'true' || github.ref == 'refs/heads/main' ) && 'true' || 'false' }}
     
@@ -46,6 +46,19 @@ jobs:
         run: |
           if [ -z "${{ inputs.patchlevel }}" ]; then
             echo "Patch level is required."
+            exit 1
+          fi
+
+      - name: Verify repository toolchain variables
+        run: |
+          if [ -z "$NODE_VERSION" ]; then
+            echo "::error::Repository variable NODE_VERSION is not set."
+            echo "Set it with: gh variable set NODE_VERSION --repo $GITHUB_REPOSITORY --body '<node-version>'"
+            exit 1
+          fi
+          if [ -z "$NPM_VERSION" ]; then
+            echo "::error::Repository variable NPM_VERSION is not set."
+            echo "Set it with: gh variable set NPM_VERSION --repo $GITHUB_REPOSITORY --body '<npm-version>'"
             exit 1
           fi
 
