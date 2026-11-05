@@ -3,10 +3,17 @@ run-name: Running mysql-pool-utils build.
 on: [push]
 jobs:
   build-mysql-pool-utils:
+    name: Node ${{ matrix.node }} (${{ matrix.support }})
     strategy:
       fail-fast: false
       matrix:
-        node: [22, 24, 26]
+        include:
+          - node: 22
+            support: diagnostic
+          - node: 24
+            support: supported
+          - node: 26
+            support: supported
     runs-on: ubuntu-latest
     env:
       NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -60,4 +67,14 @@ jobs:
         DATABASE_CHECK_RETRIES: 20
         DATABASE_CHECK_DELAY: 500
   
+    - name: Verify release baseline (read only)
+      if: matrix.node == 24
+      run: node scripts/check-release.cjs
+
     - run: npm run build
+
+    - name: Verify packed ESM/CommonJS runtime and declarations
+      run: npm run test:package
+
+    - name: Verify package lifecycle with a dry run
+      run: npm pack --dry-run
