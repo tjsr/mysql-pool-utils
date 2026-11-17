@@ -10,6 +10,7 @@ registries:
     token: ${{ secrets.NPM_TOKEN }}
 updates:
   - package-ecosystem: 'npm'
+    rebase-strategy: auto
     directory: "/"
     registries:
     - npm-github
@@ -21,7 +22,19 @@ updates:
     ignore:
       - dependency-name: '@types/node'
         update-types: ["version-update:semver-major"]
+    groups:
+      linter:
+        applies-to: version-updates
+        patterns:
+          - "@tjsr/eslint-config"
+          - "eslint"
+          - "eslint-*"
+          - "@eslint/*"
+          - "@typescript-eslint/*"
+          - "typescript-eslint"
+          - "@stylistic/*"
   - package-ecosystem: "github-actions"
+    rebase-strategy: auto
     directory: "/"
     schedule:
       # Check for updates to GitHub Actions every week
